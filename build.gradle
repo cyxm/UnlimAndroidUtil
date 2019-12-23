@@ -1,0 +1,30 @@
+//build脚本工具
+buildscript {
+    repositories {
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public'
+        }
+        google()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.3'
+    }
+}
+
+//所有工程通用配置
+allprojects {
+    //仓库路径配置
+    repositories {
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public'
+        }
+        maven {
+            url "https://jitpack.io"
+        }
+        jcenter {
+            url 'http://jcenter.bintray.com/'
+        }
+        google()
+    }
+}
