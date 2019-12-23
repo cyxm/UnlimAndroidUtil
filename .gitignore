@@ -3,6 +3,7 @@
 
 #同步业务模块
 !/app
+!/libraries
 
 ##同步工程配置信息
 !.gitignore

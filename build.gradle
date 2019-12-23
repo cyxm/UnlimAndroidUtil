@@ -4,11 +4,15 @@ buildscript {
         maven {
             url 'http://maven.aliyun.com/nexus/content/groups/public'
         }
+        maven {
+            url "https://jitpack.io"
+        }
         google()
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     }
 }
 
