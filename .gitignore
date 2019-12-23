@@ -11,12 +11,12 @@
 !settings.gradle
 !depend.gradle
 !gradle.properties
+!/gradle/
 
 #忽略工程管理文件
 **/.idea/*
 **/.gradle/*
 **/build/*
-**/gradle/*
 **/gradlew
 **/gradlew.bat
 **/local.properties
