@@ -1,4 +1,4 @@
-#启用白名单
+﻿#启用白名单
 /*
 
 #同步业务模块
@@ -17,8 +17,6 @@
 **/.idea/*
 **/.gradle/*
 **/build/*
-**/gradlew
-**/gradlew.bat
 **/local.properties
 *.iml
 
