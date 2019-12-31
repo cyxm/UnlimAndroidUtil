@@ -2,10 +2,9 @@ package com.un.componentax.dialog;
 
 import android.app.Dialog;
 
-public class DialogFragmentModal extends DialogFragmentCommon {
-
+public class DialogSettingModal implements ItfDialogSetting {
 	@Override
-	protected void onDialogSet(Dialog dialog) {
+	public void onDialogSetting(Dialog dialog) {
 		dialog.setCancelable(false);
 		dialog.setCanceledOnTouchOutside(false);
 	}
