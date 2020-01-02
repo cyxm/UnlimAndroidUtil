@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.un.componentax.R;
 
 public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 
@@ -131,7 +134,9 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 
 	public void show(FragmentManager fragmentManager) {
 		if (!isAdded()) {
-			show(fragmentManager, "");
+			FragmentTransaction ft = fragmentManager.beginTransaction();
+			ft.setCustomAnimations(R.anim.translate_enter_from_left, R.anim.translate_exit_to_left);
+			show(ft, "");
 		}
 	}
 }
