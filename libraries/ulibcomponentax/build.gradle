@@ -19,6 +19,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    'src/main/res/cardview',
+                    'src/main/res/dialog'
+            ]
+        }
+    }
 }
 
 dependencies {
@@ -33,4 +42,5 @@ dependencies {
     implementation project(":ulibutilj")
     implementation project(":ulibutila")
     implementation project(":ulibutilax")
+    implementation 'androidx.cardview:cardview:1.0.0'
 }
