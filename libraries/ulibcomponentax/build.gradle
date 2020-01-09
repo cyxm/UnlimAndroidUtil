@@ -23,7 +23,7 @@ android {
     sourceSets {
         main {
             res.srcDirs = [
-                    'src/main/res/cardview',
+                    'src/main/res/compose',
                     'src/main/res/dialog'
             ]
         }
@@ -42,5 +42,4 @@ dependencies {
     implementation project(":ulibutilj")
     implementation project(":ulibutila")
     implementation project(":ulibutilax")
-    implementation 'androidx.cardview:cardview:1.0.0'
 }

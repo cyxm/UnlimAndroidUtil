@@ -1,7 +1,6 @@
 package com.un.componentax.widget;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 
-import com.un.utila.viewhelp.ViewClipUtil;
 import com.un.utilj.collect.MixCollectionUtil;
 
 import java.util.ArrayList;
@@ -39,6 +36,8 @@ public class LinearLayoutGroup extends LinearLayout {
 
 		ItfViewAdapter adapter;
 
+		ItfViewGen gen;
+
 		Map<String, List> dataMap = new HashMap<>();
 		List<List> dataList = new ArrayList<>();
 
@@ -57,6 +56,11 @@ public class LinearLayoutGroup extends LinearLayout {
 			return this;
 		}
 
+		public Build setGenerator(ItfViewGen gen) {
+			this.gen = gen;
+			return this;
+		}
+
 		public LinearLayoutGroup build(Context context) {
 			LayoutInflater li = LayoutInflater.from(context);
 
@@ -67,26 +71,9 @@ public class LinearLayoutGroup extends LinearLayout {
 				return parent;
 			} else {
 				for (List childList : dataList) {
-					LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(
-							LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT
-					);
-					ll.setMargins(20, 20, 20, 20);
+					ViewGroup groupView = gen.genGroup();
 
-					CardView cardView = new CardView(context);
-					cardView.setCardElevation(6);
-
-					parent.addView(cardView, ll);
-
-					LinearLayout groupView = new LinearLayout(context);
-					groupView.setOrientation(LinearLayout.VERTICAL);
-					groupView.setBackgroundColor(Color.WHITE);
-					ViewClipUtil.clipRound(groupView, 10);
-
-					cardView.addView(groupView, new ViewGroup.LayoutParams(
-									ViewGroup.LayoutParams.MATCH_PARENT,
-									ViewGroup.LayoutParams.WRAP_CONTENT
-							)
-					);
+					parent.addView(groupView);
 
 					for (Object child : childList) {
 						View v = li.inflate(resId, groupView, false);

@@ -5,6 +5,9 @@
 !/app
 !/libraries
 
+#文档
+!/docs
+
 ##同步工程配置信息
 !.gitignore
 !build.gradle

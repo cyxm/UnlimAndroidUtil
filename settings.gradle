@@ -1,4 +1,4 @@
-include(":app")
+include ':app'
 
 //批量指定工程路径
 file('libraries').eachDir {
