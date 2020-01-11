@@ -1,0 +1,4 @@
+ps | grep "com.showmo"
+logcat *:E | grep "PID" > /mnt/sdcard/showmolog.txt
+
+adb shell setprop log.tag.hwpush VERBOSEºÍadb shell logcat -v time > D:/log.txt

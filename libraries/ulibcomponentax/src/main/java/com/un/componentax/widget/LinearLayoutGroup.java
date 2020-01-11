@@ -71,16 +71,20 @@ public class LinearLayoutGroup extends LinearLayout {
 				return parent;
 			} else {
 				for (List childList : dataList) {
-					ViewGroup groupView = gen.genGroup();
+					ViewGroup[] groupView = gen.genGroup();
+					ViewGroup firstGroup = groupView[0];
+					ViewGroup lastGroup = groupView[groupView.length - 1];
 
-					parent.addView(groupView);
+					parent.addView(firstGroup);
 
-					for (Object child : childList) {
-						View v = li.inflate(resId, groupView, false);
+					int childCount = childList.size();
+					for (int i = 0; i < childCount; i++) {
+						Object child = childList.get(i);
+						View v = li.inflate(resId, lastGroup, false);
 						if (adapter != null) {
 							adapter.adapter(v, child);
 						}
-						groupView.addView(v, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+						lastGroup.addView(v, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 					}
 				}
 				return parent;

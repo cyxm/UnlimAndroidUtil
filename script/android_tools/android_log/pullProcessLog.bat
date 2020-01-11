@@ -1,0 +1,1 @@
+logcat *:E | grep "com.pwdemo" > /mnt/sdcard/showmolog.txt

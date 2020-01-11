@@ -1,0 +1,1 @@
+jar cvfM PwSDK-0.1.0.aar src/PwSDK*

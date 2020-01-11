@@ -4,6 +4,7 @@
 #同步业务模块
 !/app
 !/libraries
+!/script
 
 #文档
 !/docs
