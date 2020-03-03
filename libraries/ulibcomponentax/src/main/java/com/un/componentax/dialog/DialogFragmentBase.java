@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.un.componentax.R;
+import com.un.utila.viewhelp.ViewClipUtil;
 
 public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 
@@ -70,48 +71,7 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View v = inflater.inflate(getResId(), container, false);
-		if (dialogViewSetting != null) {
-			dialogViewSetting.onViewCreated(v);
-			if (dialogWindowSetting != null) {
-				if (dialogWindowSetting.getWidth() == WindowManager.LayoutParams.WRAP_CONTENT
-						|| dialogWindowSetting.getHeight() == WindowManager.LayoutParams.WRAP_CONTENT
-				) {
-					v.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-						@Override
-						public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-							int contentWidth = v.getWidth();
-							int contentHeight = v.getHeight();
-							Dialog dialog = getDialog();
-							if (dialog == null) {
-								return;
-							}
-
-							Window window = dialog.getWindow();
-							if (window == null) {
-								return;
-							}
-
-							int layoutWidth = contentWidth;
-							int layoutHeight = contentHeight;
-
-							if (dialogWindowSetting.getWidth() == WindowManager.LayoutParams.WRAP_CONTENT) {
-								int maxWidth = dialogWindowSetting.getWidthMax();
-								if (maxWidth > 0 && contentWidth > maxWidth) {
-									layoutWidth = maxWidth;
-								}
-							}
-							if (dialogWindowSetting.getHeight() == WindowManager.LayoutParams.WRAP_CONTENT) {
-								int maxHeight = dialogWindowSetting.getHeightMax();
-								if (maxHeight > 0 && contentHeight > maxHeight) {
-									layoutHeight = maxHeight;
-								}
-							}
-							window.setLayout(layoutWidth, layoutHeight);
-						}
-					});
-				}
-			}
-		}
+		ViewClipUtil.clipRoundRect(v, 10);
 		return v;
 	}
 

@@ -26,7 +26,8 @@ android {
                     'src/main/res/compose',
                     'src/main/res/dialog',
                     'src/main/res/cardview',
-                    'src/main/res/zxingview'
+                    'src/main/res/zxingview',
+                    'src/main/res/toast'
             ]
         }
     }

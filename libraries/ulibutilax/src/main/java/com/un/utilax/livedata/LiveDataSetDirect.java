@@ -15,4 +15,8 @@ public class LiveDataSetDirect<T> extends MutableLiveData<T> {
 	public void set() {
 		super.setValue(super.getValue());
 	}
+
+	public void clear() {
+		postValue(null);
+	}
 }
