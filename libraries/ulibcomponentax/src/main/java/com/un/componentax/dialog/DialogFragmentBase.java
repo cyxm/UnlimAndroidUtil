@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -138,5 +139,9 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 			ft.setCustomAnimations(R.anim.translate_enter_from_left, R.anim.translate_exit_to_left);
 			show(ft, "");
 		}
+	}
+
+	public void show(FragmentActivity fragmentActivity) {
+		show(fragmentActivity.getSupportFragmentManager());
 	}
 }

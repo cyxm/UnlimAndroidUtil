@@ -1,4 +1,4 @@
-package com.un.utila;
+package com.un.utila.component;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,5 +9,4 @@ public class ComponentChangeUtil {
 		Intent intent = new Intent(activity, clz);
 		activity.startActivity(intent);
 	}
-
 }
