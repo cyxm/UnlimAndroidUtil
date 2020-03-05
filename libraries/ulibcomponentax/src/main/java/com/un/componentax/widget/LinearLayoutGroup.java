@@ -79,6 +79,12 @@ public class LinearLayoutGroup extends LinearLayout {
 							adapter.adapter(v, child);
 						}
 						lastGroup.addView(v, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+						if (i != childCount - 1) {
+							if (adapter != null) {
+								lastGroup.addView(adapter.genSep(lastGroup));
+							}
+
+						}
 					}
 				}
 				return parent;

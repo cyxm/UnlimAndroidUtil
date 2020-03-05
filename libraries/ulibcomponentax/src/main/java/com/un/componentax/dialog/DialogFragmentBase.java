@@ -2,6 +2,8 @@ package com.un.componentax.dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Looper;
+import android.os.MessageQueue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +93,18 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 
 		window.requestFeature(Window.FEATURE_NO_TITLE);
 		window.setBackgroundDrawableResource(android.R.color.transparent);
+
+		Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
+			@Override
+			public boolean queueIdle() {
+				onAfterUIInited();
+				return false;
+			}
+		});
+	}
+
+	protected void onAfterUIInited() {
+
 	}
 
 	public void show(FragmentManager fragmentManager) {
