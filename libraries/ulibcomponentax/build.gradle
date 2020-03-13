@@ -47,4 +47,5 @@ dependencies {
     implementation project(":ulibutilj")
     implementation project(":ulibutila")
     implementation project(":ulibutilax")
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }
