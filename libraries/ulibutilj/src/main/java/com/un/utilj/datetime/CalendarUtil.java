@@ -22,6 +22,14 @@ public class CalendarUtil {
 		calendar.add(Calendar.DATE, 1);
 	}
 
+
+	public static void nextHour(Calendar calendar) {
+		if (calendar == null) {
+			return;
+		}
+		calendar.add(Calendar.HOUR_OF_DAY, 1);
+	}
+
 	/**
 	 * 将日期以天取整
 	 *
@@ -87,5 +95,36 @@ public class CalendarUtil {
 	public static void increaseMilli(Calendar calendar, long increaseMilli) {
 		long milli = calendar.getTimeInMillis() + increaseMilli;
 		calendar.setTimeInMillis(milli);
+	}
+
+	/**
+	 * 将日期以小时取整
+	 *
+	 * @param calendar
+	 */
+	public static Calendar formatToHour(Calendar calendar) {
+		if (calendar == null) {
+			return null;
+		}
+		Calendar resultCalendar = (Calendar) calendar.clone();
+		resultCalendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY), 0, 0);
+		resultCalendar.set(Calendar.MILLISECOND, 0);
+		return resultCalendar;
+	}
+
+	/**
+	 * 将日期以分钟取整
+	 *
+	 * @param calendar
+	 */
+	public static Calendar formatToMinu(Calendar calendar, int step) {
+		if (calendar == null) {
+			return null;
+		}
+		Calendar resultCalendar = (Calendar) calendar.clone();
+		int minu = calendar.get(Calendar.MINUTE)/step*step;
+		resultCalendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY), minu, 0);
+		resultCalendar.set(Calendar.MILLISECOND, 0);
+		return resultCalendar;
 	}
 }
