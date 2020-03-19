@@ -11,4 +11,9 @@ public class ResUtil {
 		return typedValue.data;
 	}
 
+	public static int getDimenAttr(Context context, int attr) {
+		TypedValue typedValue = new TypedValue();
+		context.getTheme().resolveAttribute(attr, typedValue, true);
+		return typedValue.data;
+	}
 }

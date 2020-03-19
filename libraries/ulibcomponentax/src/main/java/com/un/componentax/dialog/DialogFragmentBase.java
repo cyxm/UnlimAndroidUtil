@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.un.componentax.R;
+import com.un.utila.display.SizeUnitUtil;
 import com.un.utila.viewhelp.ViewClipUtil;
 
 public abstract class DialogFragmentBase extends AppCompatDialogFragment {
@@ -73,7 +74,11 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View v = inflater.inflate(getResId(), container, false);
-		ViewClipUtil.clipRoundRect(v, 10);
+		if (dialogViewSetting != null) {
+			dialogViewSetting.onViewCreated(v);
+		} else {
+			ViewClipUtil.clipRoundRect(v, SizeUnitUtil.getPx(getContext(), 8));
+		}
 		return v;
 	}
 
