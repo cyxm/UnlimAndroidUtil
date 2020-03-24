@@ -1,6 +1,10 @@
 package com.un.utilj.datetime;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * 日期时间处理工具类
@@ -127,4 +131,107 @@ public class CalendarUtil {
 		resultCalendar.set(Calendar.MILLISECOND, 0);
 		return resultCalendar;
 	}
+
+
+	/**
+	 * Calendar转Date
+	 * @param calendar
+	 * @return
+	 */
+	public static Date formatCalendarToDate(Calendar calendar){
+		return calendar.getTime();
+	}
+
+	/**
+	 * Date转Calendar
+	 * @param date
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Calendar formatDateToCalendar(Date date) throws ParseException {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		return calendar;
+	}
+
+	/**
+	 * Date转String("yyyy-MM-dd")
+	 * @param date
+	 * @return
+	 */
+	public static String formatDateToDateString(Date date){
+		SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+		return format.format(date);
+	}
+
+	/**
+	 * String("yyyy-MM-dd")转Date
+	 * @param dateString
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Date formatDateStringToDate(String dateString) throws ParseException {
+		SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+		return format.parse(dateString);
+	}
+
+	/**
+	 * Calendar转String("yyyy-MM-dd")
+	 * @param calendar
+	 * @return
+	 */
+	public static String formatCalendarToDateString(Calendar calendar){
+		return formatDateToDateString(formatCalendarToDate(calendar));
+	}
+
+	/**
+	 * String("yyyy-MM-dd")转Calendar
+	 * @param dateString
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Calendar formatDateStringToCalendar(String dateString) throws ParseException {
+		return formatDateToCalendar(formatDateStringToDate(dateString));
+	}
+
+	/**
+	 * Date转String("HH:mm")
+	 * @param date
+	 * @return
+	 */
+	public static String formatDateToTimeString(Date date){
+		SimpleDateFormat format= new SimpleDateFormat("HH:mm", Locale.getDefault());
+		return format.format(date);
+	}
+
+	/**
+	 * String("HH:mm")转Date
+	 * @param dateString
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Date formatTimeStringToDate(String dateString) throws ParseException {
+		SimpleDateFormat format= new SimpleDateFormat("HH:mm", Locale.getDefault());
+		return format.parse(dateString);
+	}
+
+	/**
+	 * Calendar转String("HH:mm")
+	 * @param calendar
+	 * @return
+	 */
+	public static String formatCalendarToShortTimeString(Calendar calendar){
+		return formatDateToTimeString(formatCalendarToDate(calendar));
+	}
+
+	/**
+	 * String("HH:mm")转Calendar
+	 * @param dateString
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Calendar formatShortTimeStringToCalendar(String dateString) throws ParseException {
+		return formatDateToCalendar(formatTimeStringToDate(dateString));
+	}
+
 }
