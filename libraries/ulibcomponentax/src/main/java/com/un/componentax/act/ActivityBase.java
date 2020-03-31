@@ -1,8 +1,10 @@
 package com.un.componentax.act;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.MessageQueue;
+import android.util.SparseArray;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +17,8 @@ import androidx.fragment.app.FragmentActivity;
 public abstract class ActivityBase extends AppCompatActivity {
 
 	protected FragmentActivity mSelfActivity;
+
+	SparseArray<IOnActivityResult> listOnActivityResult = new SparseArray<>();
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,5 +57,25 @@ public abstract class ActivityBase extends AppCompatActivity {
 	 */
 	protected void onWindowSetup() {
 
+	}
+
+	//使用回调处理Activity返回
+	public void addActivityResult(int requestCode, IOnActivityResult onActivityResult) {
+		listOnActivityResult.append(requestCode, onActivityResult);
+	}
+
+	public void removeActivityResult(int requestCode) {
+		listOnActivityResult.delete(requestCode);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		IOnActivityResult onActivityResult = listOnActivityResult.get(requestCode);
+		if (onActivityResult != null) {
+			onActivityResult.onActivityResult(requestCode, resultCode, data);
+			removeActivityResult(requestCode);
+		}
 	}
 }

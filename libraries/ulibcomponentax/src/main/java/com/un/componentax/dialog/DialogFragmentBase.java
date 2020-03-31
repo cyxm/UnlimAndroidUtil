@@ -2,6 +2,7 @@ package com.un.componentax.dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.os.MessageQueue;
 import android.view.LayoutInflater;
@@ -112,15 +113,31 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 
 	}
 
-	public void show(FragmentManager fragmentManager) {
-		if (!isAdded()) {
-			FragmentTransaction ft = fragmentManager.beginTransaction();
-			ft.setCustomAnimations(R.anim.translate_enter_from_left, R.anim.translate_exit_to_left);
-			show(ft, "");
-		}
+	public void show(final FragmentManager fragmentManager) {
+		Handler handler = new Handler(Looper.getMainLooper());
+		handler.post(new Runnable() {
+			@Override
+			public void run() {
+				if (!isAdded()) {
+					FragmentTransaction ft = fragmentManager.beginTransaction();
+					ft.setCustomAnimations(R.anim.translate_enter_from_left, R.anim.translate_exit_to_left);
+					show(ft, "");
+				}
+			}
+		});
 	}
 
 	public void show(FragmentActivity fragmentActivity) {
 		show(fragmentActivity.getSupportFragmentManager());
+	}
+
+	public void close() {
+		Handler handler = new Handler(Looper.getMainLooper());
+		handler.post(new Runnable() {
+			@Override
+			public void run() {
+				dismissAllowingStateLoss();
+			}
+		});
 	}
 }

@@ -19,4 +19,8 @@ public class ResUtil {
 		float dimen = typedValue.getDimension(DisplayUtil.getDisplayMetrics(context));
 		return (int) dimen;
 	}
+
+	public static String getString(Context context, int res) {
+		return context.getResources().getString(res);
+	}
 }
