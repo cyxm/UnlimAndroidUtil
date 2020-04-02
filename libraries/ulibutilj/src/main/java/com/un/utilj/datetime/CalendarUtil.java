@@ -44,7 +44,8 @@ public class CalendarUtil {
 			return null;
 		}
 		Calendar resultCalendar = (Calendar) calendar.clone();
-		resultCalendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
+		resultCalendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+				calendar.get(Calendar.DATE), 0, 0, 0);
 		resultCalendar.set(Calendar.MILLISECOND, 0);
 		return resultCalendar;
 	}
@@ -92,7 +93,8 @@ public class CalendarUtil {
 		if (calendar == null) {
 			return;
 		}
-		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), hour, minute, second);
+		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
+				hour, minute, second);
 		calendar.set(Calendar.MILLISECOND, 0);
 	}
 
@@ -111,7 +113,8 @@ public class CalendarUtil {
 			return null;
 		}
 		Calendar resultCalendar = (Calendar) calendar.clone();
-		resultCalendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY), 0, 0);
+		resultCalendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+				calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY), 0, 0);
 		resultCalendar.set(Calendar.MILLISECOND, 0);
 		return resultCalendar;
 	}
@@ -126,8 +129,9 @@ public class CalendarUtil {
 			return null;
 		}
 		Calendar resultCalendar = (Calendar) calendar.clone();
-		int minu = calendar.get(Calendar.MINUTE)/step*step;
-		resultCalendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY), minu, 0);
+		int minu = calendar.get(Calendar.MINUTE) / step * step;
+		resultCalendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+				calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY), minu, 0);
 		resultCalendar.set(Calendar.MILLISECOND, 0);
 		return resultCalendar;
 	}
@@ -135,15 +139,17 @@ public class CalendarUtil {
 
 	/**
 	 * Calendar转Date
+	 *
 	 * @param calendar
 	 * @return
 	 */
-	public static Date formatCalendarToDate(Calendar calendar){
+	public static Date formatCalendarToDate(Calendar calendar) {
 		return calendar.getTime();
 	}
 
 	/**
 	 * Date转Calendar
+	 *
 	 * @param date
 	 * @return
 	 * @throws ParseException
@@ -155,37 +161,41 @@ public class CalendarUtil {
 	}
 
 	/**
-	 * Date转String("yyyy-MM-dd")
+	 * Date转日期("yyyy-MM-dd")
+	 *
 	 * @param date
 	 * @return
 	 */
-	public static String formatDateToDateString(Date date){
-		SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+	public static String formatDateToDateString(Date date) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 		return format.format(date);
 	}
 
 	/**
-	 * String("yyyy-MM-dd")转Date
+	 * 日期("yyyy-MM-dd")转Date
+	 *
 	 * @param dateString
 	 * @return
 	 * @throws ParseException
 	 */
 	public static Date formatDateStringToDate(String dateString) throws ParseException {
-		SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 		return format.parse(dateString);
 	}
 
 	/**
-	 * Calendar转String("yyyy-MM-dd")
+	 * Calendar转日期("yyyy-MM-dd")
+	 *
 	 * @param calendar
 	 * @return
 	 */
-	public static String formatCalendarToDateString(Calendar calendar){
+	public static String formatCalendarToDateString(Calendar calendar) {
 		return formatDateToDateString(formatCalendarToDate(calendar));
 	}
 
 	/**
-	 * String("yyyy-MM-dd")转Calendar
+	 * 日期("yyyy-MM-dd")转Calendar
+	 *
 	 * @param dateString
 	 * @return
 	 * @throws ParseException
@@ -195,43 +205,79 @@ public class CalendarUtil {
 	}
 
 	/**
-	 * Date转String("HH:mm")
+	 * Date转时间("HH:mm")
+	 *
 	 * @param date
 	 * @return
 	 */
-	public static String formatDateToTimeString(Date date){
-		SimpleDateFormat format= new SimpleDateFormat("HH:mm", Locale.getDefault());
+	public static String formatDateToShortTimeString(Date date) {
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
 		return format.format(date);
 	}
 
 	/**
-	 * String("HH:mm")转Date
-	 * @param dateString
+	 * 时间("HH:mm")转Date
+	 *
+	 * @param timeString
 	 * @return
 	 * @throws ParseException
 	 */
-	public static Date formatTimeStringToDate(String dateString) throws ParseException {
-		SimpleDateFormat format= new SimpleDateFormat("HH:mm", Locale.getDefault());
-		return format.parse(dateString);
+	public static Date formatShortTimeStringToDate(String timeString) throws ParseException {
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
+		return format.parse(timeString);
 	}
 
 	/**
-	 * Calendar转String("HH:mm")
+	 * Calendar转时间("HH:mm")
+	 *
 	 * @param calendar
 	 * @return
 	 */
-	public static String formatCalendarToShortTimeString(Calendar calendar){
-		return formatDateToTimeString(formatCalendarToDate(calendar));
+	public static String formatCalendarToShortTimeString(Calendar calendar) {
+		return formatDateToShortTimeString(formatCalendarToDate(calendar));
 	}
 
 	/**
-	 * String("HH:mm")转Calendar
-	 * @param dateString
+	 * 时间("HH:mm")转Calendar
+	 *
+	 * @param timeString 日期字符串
 	 * @return
 	 * @throws ParseException
 	 */
-	public static Calendar formatShortTimeStringToCalendar(String dateString) throws ParseException {
-		return formatDateToCalendar(formatTimeStringToDate(dateString));
+	public static Calendar formatShortTimeStringToCalendar(String timeString) throws ParseException {
+		return formatDateToCalendar(formatShortTimeStringToDate(timeString));
+	}
+
+	/**
+	 * 时间戳(long)转Date
+	 *
+	 * @param timestamp 时间戳
+	 * @return
+	 */
+	public static Date formatTimestampToDate(long timestamp) {
+		return new Date(timestamp);
+	}
+
+	/**
+	 * Date转月份("yyyy/MM")
+	 *
+	 * @param date 时间戳
+	 * @return
+	 */
+	public static String formatDateToMonthString(Date date) {
+		// FIXME: 2020/4/2 debug需要，release改为"yyyy/MM"
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+		return format.format(date);
+	}
+
+	/**
+	 * 时间戳(long)转月份("yyyy/MM")
+	 *
+	 * @param timestamp 时间戳
+	 * @return
+	 */
+	public static String formatTimestampToMonthString(long timestamp) {
+		return formatDateToMonthString(formatTimestampToDate(timestamp));
 	}
 
 }
