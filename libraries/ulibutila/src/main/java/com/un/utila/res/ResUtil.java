@@ -23,4 +23,8 @@ public class ResUtil {
 	public static String getString(Context context, int res) {
 		return context.getResources().getString(res);
 	}
+
+	public static boolean getBool(Context context, int res) {
+		return context.getResources().getBoolean(res);
+	}
 }
