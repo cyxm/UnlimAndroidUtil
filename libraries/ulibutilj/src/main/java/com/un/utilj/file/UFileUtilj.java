@@ -36,6 +36,24 @@ public class UFileUtilj {
 		return createDirs(file);
 	}
 
+	public static boolean createParentDirs(String path) {
+		if (path == null) {
+			return false;
+		}
+
+		File file = new File(path);
+		File parentFile = file.getParentFile();
+		if (parentFile == null) {
+			return false;
+		}
+
+		if (!parentFile.exists()) {
+			return createDirs(parentFile);
+		} else {
+			return true;
+		}
+	}
+
 	/**
 	 * 判断文件或目录是否存在
 	 *
