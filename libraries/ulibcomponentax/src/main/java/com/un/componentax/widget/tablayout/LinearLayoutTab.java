@@ -93,7 +93,7 @@ public class LinearLayoutTab extends LinearLayout implements ItfTabLayout {
 			for (Object key : viewMap.keySet()) {
 				if (key.equals(tag)) {
 					tabViewStateAdapter.changeState(viewMap.get(key), key, true);
-				} else if (key.equals(currentTag)) {
+				} else {
 					tabViewStateAdapter.changeState(viewMap.get(key), key, false);
 				}
 			}

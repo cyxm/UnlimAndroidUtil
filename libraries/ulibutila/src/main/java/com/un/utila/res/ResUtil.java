@@ -1,11 +1,20 @@
 package com.un.utila.res;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.TypedValue;
 
 import com.un.utila.display.DisplayUtil;
 
 public class ResUtil {
+
+	public static int getColor(Context context, int colorRes) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			return context.getResources().getColor(colorRes, context.getTheme());
+		} else {
+			return context.getResources().getColor(colorRes);
+		}
+	}
 
 	public static int getColorAttr(Context context, int attr) {
 		TypedValue typedValue = new TypedValue();
