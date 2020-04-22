@@ -1,6 +1,8 @@
 package com.un.utilj.datetime;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -57,4 +59,10 @@ public class DateFormatUtil {
 		}
 		return result;
 	}
+
+	public static String getLocaleFormatDate(long milli) {
+		DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+		return df.format(new Date(milli));
+	}
+
 }
