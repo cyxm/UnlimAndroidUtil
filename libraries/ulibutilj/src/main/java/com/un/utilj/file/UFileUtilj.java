@@ -36,6 +36,13 @@ public class UFileUtilj {
 		return createDirs(file);
 	}
 
+	/**
+	 * 创建前置目录,不创建自身
+	 *
+	 * @param path
+	 *
+	 * @return
+	 */
 	public static boolean createParentDirs(String path) {
 		if (path == null) {
 			return false;
@@ -120,6 +127,15 @@ public class UFileUtilj {
 			return true;
 		} else {
 			return file.delete();
+		}
+	}
+
+	public static long getModifyTime(String path) {
+		File file = new File(path);
+		if (file.exists()) {
+			return file.lastModified();
+		} else {
+			return 0;
 		}
 	}
 }
