@@ -14,4 +14,6 @@ public interface ItfTabLayout {
 	void setTabViewAdapter(ItfTabViewStateAdapter itf);
 
 	void changeTab(Object tag);
+
+
 }

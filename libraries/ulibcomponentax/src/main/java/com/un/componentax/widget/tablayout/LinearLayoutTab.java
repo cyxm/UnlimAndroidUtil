@@ -85,7 +85,10 @@ public class LinearLayoutTab extends LinearLayout implements ItfTabLayout {
 
 	@Override
 	public void changeTab(Object tag) {
-		if (onTabLayoutChange != null && onTabLayoutChange.onBefore(tag)) {
+		Object lastTag = currentTag;
+		currentTag = tag;
+
+		if (onTabLayoutChange != null && onTabLayoutChange.onBefore(lastTag, currentTag)) {
 			return;
 		}
 
@@ -98,9 +101,6 @@ public class LinearLayoutTab extends LinearLayout implements ItfTabLayout {
 				}
 			}
 		}
-
-		Object lastTag = currentTag;
-		currentTag = tag;
 
 		if (onTabLayoutChange != null) {
 			onTabLayoutChange.onAfter(lastTag, currentTag);

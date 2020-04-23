@@ -5,7 +5,7 @@ package com.un.componentax.widget.tablayout;
  */
 public interface ItfOnTabLayoutChange {
 
-	boolean onBefore(Object tag);
+	boolean onBefore(Object ori, Object target);
 
 	void onProgress(Object ori, Object target, int progress);
 

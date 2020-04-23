@@ -2,7 +2,7 @@ package com.un.componentax.widget.tablayout;
 
 public abstract class OnTabLayoutChangeSimple implements ItfOnTabLayoutChange {
 	@Override
-	public boolean onBefore(Object tag) {
+	public boolean onBefore(Object ori, Object target) {
 		return false;
 	}
 
