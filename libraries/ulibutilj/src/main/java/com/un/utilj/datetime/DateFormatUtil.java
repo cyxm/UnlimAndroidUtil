@@ -65,4 +65,9 @@ public class DateFormatUtil {
 		return df.format(new Date(milli));
 	}
 
+	public static String getLocaleFormatDateTime(long milli) {
+		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
+		return df.format(new Date(milli));
+	}
+
 }
