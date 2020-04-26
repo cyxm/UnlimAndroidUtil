@@ -23,6 +23,8 @@ public class LinearLayoutTab extends LinearLayout implements ItfTabLayout {
 
 	ItfOnTabLayoutChange onTabLayoutChange;
 
+	ItfOnTabLayoutChange onTabLayoutChangeNotify;
+
 	ItfTabViewStateAdapter tabViewStateAdapter;
 
 	public LinearLayoutTab(Context context) {
@@ -68,7 +70,13 @@ public class LinearLayoutTab extends LinearLayout implements ItfTabLayout {
 		v.setOnClickListener(new ThrottleClickEventAbstract() {
 			@Override
 			public void onThrottleClick(View v) {
-				changeTab(v.getTag());
+				if (onTabLayoutChangeNotify != null) {
+					Object lastTag = currentTag;
+					currentTag = v.getTag();
+					onTabLayoutChangeNotify.onAfter(lastTag, currentTag);
+				} else {
+					changeTab(v.getTag());
+				}
 			}
 		});
 	}
@@ -76,6 +84,11 @@ public class LinearLayoutTab extends LinearLayout implements ItfTabLayout {
 	@Override
 	public void setOnTabChange(ItfOnTabLayoutChange itf) {
 		this.onTabLayoutChange = itf;
+	}
+
+	@Override
+	public void setOnTabChangeNotify(ItfOnTabLayoutChange itf) {
+		this.onTabLayoutChangeNotify = itf;
 	}
 
 	@Override
@@ -88,8 +101,8 @@ public class LinearLayoutTab extends LinearLayout implements ItfTabLayout {
 		Object lastTag = currentTag;
 		currentTag = tag;
 
-		if (onTabLayoutChange != null && onTabLayoutChange.onBefore(lastTag, currentTag)) {
-			return;
+		if (onTabLayoutChange != null) {
+			onTabLayoutChange.onBefore(lastTag, currentTag);
 		}
 
 		if (tabViewStateAdapter != null) {
@@ -104,6 +117,19 @@ public class LinearLayoutTab extends LinearLayout implements ItfTabLayout {
 
 		if (onTabLayoutChange != null) {
 			onTabLayoutChange.onAfter(lastTag, currentTag);
+		}
+	}
+
+	@Override
+	public void changeTabWithoutCallback(Object tag) {
+		if (tabViewStateAdapter != null) {
+			for (Object key : viewMap.keySet()) {
+				if (key.equals(tag)) {
+					tabViewStateAdapter.changeState(viewMap.get(key), key, true);
+				} else {
+					tabViewStateAdapter.changeState(viewMap.get(key), key, false);
+				}
+			}
 		}
 	}
 }

@@ -11,9 +11,11 @@ public interface ItfTabLayout {
 
 	void setOnTabChange(ItfOnTabLayoutChange itf);
 
+	void setOnTabChangeNotify(ItfOnTabLayoutChange itf);
+
 	void setTabViewAdapter(ItfTabViewStateAdapter itf);
 
 	void changeTab(Object tag);
 
-
+	void changeTabWithoutCallback(Object tag);
 }

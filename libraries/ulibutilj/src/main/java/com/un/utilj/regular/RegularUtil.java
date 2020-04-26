@@ -1,5 +1,8 @@
 package com.un.utilj.regular;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegularUtil {
@@ -10,5 +13,18 @@ public class RegularUtil {
 
 	public static boolean isNumber(String param) {
 		return param != null && Pattern.compile("[0-9]*").matcher(param).matches();
+	}
+
+	public static List<String> splitWithUpcase(String param) {
+		List<String> array = new ArrayList<>();
+		if (param == null || param.isEmpty()) {
+			return array;
+		}
+		Pattern pattern = Pattern.compile("[A-Z]{1}[a-z0-9]*");
+		Matcher matcher = pattern.matcher(param);
+		while (matcher.find()) {
+			array.add(matcher.group());
+		}
+		return array;
 	}
 }
