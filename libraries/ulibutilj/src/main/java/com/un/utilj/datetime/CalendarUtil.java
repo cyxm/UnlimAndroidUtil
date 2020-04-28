@@ -58,6 +58,20 @@ public class CalendarUtil {
 	}
 
 	/**
+	 * 将日期以天取整
+	 *
+	 * @param calendar
+	 */
+	public static void changeFormatToDay(Calendar calendar) {
+		if (calendar == null) {
+			return;
+		}
+		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+				calendar.get(Calendar.DATE), 0, 0, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+	}
+
+	/**
 	 * 是否为同一天
 	 */
 	public static boolean isSameDay(Calendar calendarBase, Calendar calendarCompare) {

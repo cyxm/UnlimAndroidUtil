@@ -60,11 +60,37 @@ public class DateFormatUtil {
 		return result;
 	}
 
+	/**
+	 * 获取本地格式的日期
+	 *
+	 * @param milli
+	 *
+	 * @return
+	 */
 	public static String getLocaleFormatDate(long milli) {
-		DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+		DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
 		return df.format(new Date(milli));
 	}
 
+	/**
+	 * 获取本地格式的时间
+	 *
+	 * @param milli
+	 *
+	 * @return
+	 */
+	public static String getLocaleFormatTime(long milli) {
+		DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
+		return df.format(new Date(milli));
+	}
+
+	/**
+	 * 获取本地格式的日期和时间
+	 *
+	 * @param milli
+	 *
+	 * @return
+	 */
 	public static String getLocaleFormatDateTime(long milli) {
 		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM);
 		return df.format(new Date(milli));
