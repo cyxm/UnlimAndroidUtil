@@ -84,6 +84,11 @@ public class DateFormatUtil {
 		return df.format(new Date(milli));
 	}
 
+	public static String getLocaleFormatTimeMedium(long milli) {
+		DateFormat df = DateFormat.getTimeInstance(DateFormat.MEDIUM);
+		return df.format(new Date(milli));
+	}
+
 	/**
 	 * 获取本地格式的日期和时间
 	 *
