@@ -18,10 +18,10 @@ public class ComponentChangeUtil {
 		activity.finish();
 	}
 
-	//	public static void startActivityWithResult(ActivityBase activityBase, Intent data, IOnActivityResult onActivityResult) {
-	//		activityBase.addActivityResult(0, onActivityResult);
-	//		activityBase.startActivityForResult(data, 0);
-	//	}
+	public static void startActivityWithResult(ActivityBase activityBase, Intent data, IOnActivityResult onActivityResult) {
+		activityBase.addActivityResult(0, onActivityResult);
+		activityBase.startActivityForResult(data, 0);
+	}
 
 	public static void startActivityWithResult(ActivityBase activityBase, Class clz, IOnActivityResult onActivityResult) {
 		Intent intent = new Intent(activityBase, clz);
