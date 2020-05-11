@@ -64,6 +64,28 @@ public class Logcat {
 	}
 
 	/**
+	 * 打印Warning等级及以上的log到文件中
+	 */
+	public static Process logEToFile(final String filePath) {
+		Process process = null;
+		List<String> commandList = new ArrayList<String>();
+		commandList.add("logcat");
+		commandList.add("-f");
+		commandList.add(filePath);
+		commandList.add("-v");
+		commandList.add("time");
+		commandList.add("-s");
+		commandList.add("*:E");
+
+		try {
+			process = Runtime.getRuntime().exec(commandList.toArray(new String[commandList.size()]));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return process;
+	}
+
+	/**
 	 * 杀死同一用户下的logcat进程
 	 */
 	public static void killUserLogcatPro(final String pPackageName) {
