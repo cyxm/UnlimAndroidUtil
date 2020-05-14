@@ -17,6 +17,8 @@ public class DateFormatUtil {
 
 	public static final String PATTERN_TIME_0 = "HH:mm";
 
+	public static final String PATTERN_TIME_1 = "HH:mm:ss";
+
 	public static final String PATTERN_DT_0 = "yyyyMMddHH";
 
 	public static String getFormatDatetime(String format, long milli, TimeZone timeZone, Locale locale) {
@@ -43,6 +45,10 @@ public class DateFormatUtil {
 
 	public static String getFormatTime_Hm(long milli) {
 		return getFormatDatetime(PATTERN_TIME_0, milli);
+	}
+
+	public static String getFormatTime_Hms(long milli) {
+		return getFormatDatetime(PATTERN_TIME_1, milli);
 	}
 
 	/**

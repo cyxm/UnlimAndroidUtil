@@ -160,4 +160,23 @@ public class ProcessUtil {
 		}
 		return null;
 	}
+
+	/**
+	 * 进程是否正在活动
+	 *
+	 * @param process
+	 *
+	 * @return
+	 */
+	public static boolean isProcessAlive(Process process) {
+		if (process == null) {
+			return false;
+		}
+		try {
+			process.exitValue();
+			return false;
+		} catch (Exception e) {
+			return true;
+		}
+	}
 }

@@ -41,9 +41,18 @@ public class Logcat {
 	}
 
 	/**
-	 * 启动将日志存放到文件中的进程
+	 * 启动logcat进程将日志存入文件
+	 *
+	 * @param filePath
+	 * 		文件路径
+	 * @param tag
+	 * 		Tag
+	 * @param level
+	 * 		日志等级
+	 *
+	 * @return logcat进程
 	 */
-	public static Process saveToFile(final String filePath, final String tag) {
+	public static Process logToFile(final String filePath, final String tag, final String level) {
 		Process process = null;
 		List<String> commandList = new ArrayList<String>();
 		commandList.add("logcat");
@@ -52,8 +61,7 @@ public class Logcat {
 		commandList.add("-v");
 		commandList.add("time");
 		commandList.add("-s");
-		commandList.add(tag + ":d");
-		commandList.add("System.err:*");
+		commandList.add(tag + ":" + level);
 
 		try {
 			process = Runtime.getRuntime().exec(commandList.toArray(new String[commandList.size()]));
@@ -64,25 +72,17 @@ public class Logcat {
 	}
 
 	/**
-	 * 打印Warning等级及以上的log到文件中
+	 * 打印Error等级及以上的log到文件中
+	 */
+	public static Process logIToFile(final String filePath, final String tag) {
+		return logToFile(filePath, tag, "I");
+	}
+
+	/**
+	 * 打印Error等级及以上的log到文件中
 	 */
 	public static Process logEToFile(final String filePath) {
-		Process process = null;
-		List<String> commandList = new ArrayList<String>();
-		commandList.add("logcat");
-		commandList.add("-f");
-		commandList.add(filePath);
-		commandList.add("-v");
-		commandList.add("time");
-		commandList.add("-s");
-		commandList.add("*:E");
-
-		try {
-			process = Runtime.getRuntime().exec(commandList.toArray(new String[commandList.size()]));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return process;
+		return logToFile(filePath, "*", "E");
 	}
 
 	/**

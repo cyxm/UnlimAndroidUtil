@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentActivity;
 
 
 /**
- * 基础Activity
+ * 基础Activity,实现
  */
 public abstract class ActivityBase extends AppCompatActivity {
 

@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData;
 
 public class LiveDataSetDirect<T> extends MutableLiveData<T> {
 
+
+
 	public boolean isEmpty() {
 		return getValue() == null;
 	}
