@@ -7,9 +7,8 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * 日期时间处理工具类
+ * 分隔符
  */
-
 public class CalendarUtil {
 
 	public static void lastDay(Calendar calendar) {

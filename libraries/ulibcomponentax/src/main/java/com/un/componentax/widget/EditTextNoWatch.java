@@ -36,26 +36,14 @@ public class EditTextNoWatch extends AppCompatEditText {
 	 * @param text
 	 */
 	public void setTextNoWatch(CharSequence text) {
-		if (this.singleWatcher == null) {
-			setText(text);
-		} else {
-			removeTextChangedListener(this.singleWatcher);
-			setText(text);
-			addTextChangedListener(this.singleWatcher);
+		if (getText().toString().equals(text)) {
+			return;
 		}
-	}
-
-	/**
-	 * 忽略文字更改监听
-	 *
-	 * @param res
-	 */
-	public void setTextNoWatch(int res) {
 		if (this.singleWatcher == null) {
-			setText(res);
+			setText(text);
 		} else {
 			removeTextChangedListener(this.singleWatcher);
-			setText(res);
+			setText(text);
 			addTextChangedListener(this.singleWatcher);
 		}
 	}
