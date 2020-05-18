@@ -1,7 +1,5 @@
 package com.un.utilj.file;
 
-import android.text.TextUtils;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +17,7 @@ import java.nio.charset.Charset;
 public class UStreamUtilj {
 
 	public static void transFileToFile(String fileName, String path) {
-		if (TextUtils.isEmpty(fileName) || TextUtils.isEmpty(path)) {
+		if (fileName == null || fileName.isEmpty() || path == null || path.isEmpty()) {
 			return;
 		}
 		File file = new File(fileName);
