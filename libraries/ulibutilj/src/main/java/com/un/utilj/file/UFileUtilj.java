@@ -130,6 +130,31 @@ public class UFileUtilj {
 		}
 	}
 
+	/**
+	 * 递归删除文件或文件夹
+	 *
+	 * @param filepath
+	 *
+	 * @return
+	 */
+	public static boolean deleteFileOrDirs(File file) {
+		if (file == null || !file.exists()) {
+			return true;
+		}
+		if (file.isDirectory()) {
+			File[] childrenFile = file.listFiles();
+			if (childrenFile == null || childrenFile.length == 0) {
+				return file.delete();
+			}
+			for (File child : childrenFile) {
+				deleteFileOrDirs(child.getAbsolutePath());
+			}
+			return true;
+		} else {
+			return file.delete();
+		}
+	}
+
 	public static long getModifyTime(String path) {
 		File file = new File(path);
 		if (file.exists()) {
