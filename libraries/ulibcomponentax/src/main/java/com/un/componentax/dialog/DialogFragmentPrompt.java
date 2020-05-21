@@ -12,13 +12,13 @@ import com.un.utila.display.DisplayUtil;
 
 public abstract class DialogFragmentPrompt extends DialogFragmentModal {
 
-	protected FragmentActivity mFragmentAcivity;
+	protected FragmentActivity mFragmentActivity;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mFragmentAcivity = getActivity();
+		mFragmentActivity = getActivity();
 
 		FragmentActivity activity = getActivity();
 		if (activity == null) {
