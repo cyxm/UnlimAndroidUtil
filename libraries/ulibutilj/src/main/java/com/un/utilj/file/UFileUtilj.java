@@ -114,47 +114,88 @@ public class UFileUtilj {
 	 *
 	 * @return
 	 */
-	public static boolean deleteFileOrDirs(String filepath) {
+	public static boolean deleteFilesOrDirs(String filepath) {
 		File file = new File(filepath);
-		if (file.isDirectory()) {
-			File[] childrenFile = file.listFiles();
-			if (childrenFile == null || childrenFile.length == 0) {
-				return file.delete();
-			}
-			for (File child : childrenFile) {
-				deleteFileOrDirs(child.getAbsolutePath());
-			}
-			return true;
-		} else {
-			return file.delete();
-		}
+		return deleteFilesOrDirs(file);
 	}
 
 	/**
 	 * 递归删除文件或文件夹
 	 *
-	 * @param filepath
+	 * @param file
 	 *
 	 * @return
 	 */
-	public static boolean deleteFileOrDirs(File file) {
+	public static boolean deleteFilesOrDirs(File file) {
+		return deleteFilesOrDirs(file, true);
+	}
+
+	/**
+	 * 递归删除子文件或子文件夹
+	 *
+	 * @param filePath
+	 *
+	 * @return
+	 */
+	public static boolean deleteChildrenFilesOrDirs(String filePath) {
+		File file = new File(filePath);
+		return deleteChildrenFilesOrDirs(file);
+	}
+
+	/**
+	 * 递归删除子文件或子文件夹
+	 *
+	 * @param file
+	 *
+	 * @return
+	 */
+	public static boolean deleteChildrenFilesOrDirs(File file) {
+		return deleteFilesOrDirs(file, false);
+	}
+
+	/**
+	 * 删除所有子文件和子文件夹
+	 *
+	 * @param file
+	 * 		待删除的文件或文件夹
+	 * @param isDeleteSelf
+	 * 		如果自身为文件夹,是否删除自身
+	 *
+	 * @return
+	 */
+	public static boolean deleteFilesOrDirs(File file, boolean isDeleteSelf) {
 		if (file == null || !file.exists()) {
 			return true;
 		}
 		if (file.isDirectory()) {
 			File[] childrenFile = file.listFiles();
 			if (childrenFile == null || childrenFile.length == 0) {
-				return file.delete();
+				if (isDeleteSelf) {
+					return file.delete();
+				} else {
+					return true;
+				}
 			}
 			for (File child : childrenFile) {
-				deleteFileOrDirs(child.getAbsolutePath());
+				deleteFilesOrDirs(child, true);
 			}
-			return true;
+			if (isDeleteSelf) {
+				return file.delete();
+			} else {
+				return true;
+			}
 		} else {
 			return file.delete();
 		}
 	}
 
+	/**
+	 * 获取文件更改时间
+	 *
+	 * @param path
+	 *
+	 * @return
+	 */
 	public static long getModifyTime(String path) {
 		File file = new File(path);
 		if (file.exists()) {
