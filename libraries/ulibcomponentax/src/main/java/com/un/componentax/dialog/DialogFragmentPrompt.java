@@ -10,6 +10,9 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.un.utila.display.DisplayUtil;
 
+/**
+ * 通用dialog
+ */
 public abstract class DialogFragmentPrompt extends DialogFragmentModal {
 
 	protected FragmentActivity mFragmentActivity;

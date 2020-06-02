@@ -22,6 +22,9 @@ import com.un.componentax.R;
 import com.un.utila.display.SizeUnitUtil;
 import com.un.utila.viewhelp.ViewClipUtil;
 
+/**
+ * 基础dialog,提供定制接口
+ */
 public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 
 	private ItfDialogWindowSetting dialogWindowSetting;
