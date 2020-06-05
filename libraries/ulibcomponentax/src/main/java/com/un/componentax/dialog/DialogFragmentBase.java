@@ -17,10 +17,14 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 
 import com.un.componentax.R;
 import com.un.utila.display.SizeUnitUtil;
 import com.un.utila.viewhelp.ViewClipUtil;
+import com.un.utilax.livedata.LiveDataSetDirect;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 基础dialog,提供定制接口
@@ -32,6 +36,10 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 	private ItfDialogSetting dialogSetting;
 
 	private ItfDialogViewSetting dialogViewSetting;
+
+	private LiveDataSetDirect<Boolean> liveDataIfShow = new LiveDataSetDirect<>();
+
+	private AtomicInteger showCount = new AtomicInteger(0);
 
 	public void setDialogWindowSetting(ItfDialogWindowSetting dialogWindowSetting) {
 		this.dialogWindowSetting = dialogWindowSetting;
@@ -116,22 +124,36 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 
 	}
 
-	public void show(final FragmentManager fragmentManager) {
+	public void show(final FragmentActivity fragmentActivity) {
 		Handler handler = new Handler(Looper.getMainLooper());
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
-				if (!isAdded()) {
-					FragmentTransaction ft = fragmentManager.beginTransaction();
-					ft.setCustomAnimations(R.anim.translate_enter_from_left, R.anim.translate_exit_to_left);
-					show(ft, "");
+				final int count = showCount.getAndIncrement();
+
+				if (count == 0) {
+					liveDataIfShow.observeForever(new Observer<Boolean>() {
+						@Override
+						public void onChanged(Boolean aBoolean) {
+							if (aBoolean == null) {
+								return;
+							}
+							if (aBoolean) {
+								if (count == 0) {
+									FragmentManager fm = fragmentActivity.getSupportFragmentManager();
+									FragmentTransaction ft = fragmentActivity.getSupportFragmentManager().beginTransaction();
+									ft.setCustomAnimations(R.anim.translate_enter_from_left, R.anim.translate_exit_to_left);
+
+									show(ft, "");
+								}
+							}
+						}
+					});
 				}
+
+				liveDataIfShow.postValue(true);
 			}
 		});
-	}
-
-	public void show(FragmentActivity fragmentActivity) {
-		show(fragmentActivity.getSupportFragmentManager());
 	}
 
 	public void close() {
@@ -139,7 +161,10 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
-				dismissAllowingStateLoss();
+				int count = showCount.decrementAndGet();
+				if (count == 0) {
+					dismissAllowingStateLoss();
+				}
 			}
 		});
 	}
