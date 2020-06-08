@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 
@@ -37,9 +36,11 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 
 	private ItfDialogViewSetting dialogViewSetting;
 
-	private LiveDataSetDirect<Boolean> liveDataIfShow = new LiveDataSetDirect<>();
+	private LiveDataSetDirect<Integer> liveDataIfShow = new LiveDataSetDirect<>();
 
 	private AtomicInteger showCount = new AtomicInteger(0);
+
+	private FragmentActivity hostActivity;
 
 	public void setDialogWindowSetting(ItfDialogWindowSetting dialogWindowSetting) {
 		this.dialogWindowSetting = dialogWindowSetting;
@@ -124,34 +125,33 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 
 	}
 
+	Observer dialogObserver = new Observer<Integer>() {
+		@Override
+		public void onChanged(Integer integer) {
+			if (integer == null) {
+				return;
+			}
+			if (integer == 0) {
+				FragmentTransaction ft = hostActivity.getSupportFragmentManager().beginTransaction();
+				ft.setCustomAnimations(R.anim.translate_enter_from_left, R.anim.translate_exit_to_left);
+
+				show(ft, "");
+			}
+		}
+	};
+
 	public void show(final FragmentActivity fragmentActivity) {
 		Handler handler = new Handler(Looper.getMainLooper());
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
-				final int count = showCount.getAndIncrement();
-
+				int count = showCount.getAndIncrement();
 				if (count == 0) {
-					liveDataIfShow.observeForever(new Observer<Boolean>() {
-						@Override
-						public void onChanged(Boolean aBoolean) {
-							if (aBoolean == null) {
-								return;
-							}
-							if (aBoolean) {
-								if (count == 0) {
-									FragmentManager fm = fragmentActivity.getSupportFragmentManager();
-									FragmentTransaction ft = fragmentActivity.getSupportFragmentManager().beginTransaction();
-									ft.setCustomAnimations(R.anim.translate_enter_from_left, R.anim.translate_exit_to_left);
-
-									show(ft, "");
-								}
-							}
-						}
-					});
+					liveDataIfShow.setValue(null);
+					hostActivity = fragmentActivity;
+					liveDataIfShow.observe(fragmentActivity, dialogObserver);
 				}
-
-				liveDataIfShow.postValue(true);
+				liveDataIfShow.postValue(count);
 			}
 		});
 	}
@@ -162,7 +162,10 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 			@Override
 			public void run() {
 				int count = showCount.decrementAndGet();
+
 				if (count == 0) {
+					liveDataIfShow.removeObservers(hostActivity);
+					hostActivity = null;
 					dismissAllowingStateLoss();
 				}
 			}
