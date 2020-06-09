@@ -13,7 +13,12 @@ public class IpAddrUtil {
 
 		try {
 			for (int i = mIpArr.length - 1; i >= 0; i--) {
-				ipint = (ipint << 8) | Integer.parseInt(mIpArr[i]);
+				int seg = Integer.parseInt(mIpArr[i]);
+				if (seg > 255) {
+					ipint = 0;
+					break;
+				}
+				ipint = (ipint << 8) | seg;
 			}
 		} catch (Exception e) {
 			ipint = 0;
