@@ -14,13 +14,13 @@ public class NotifyChannelUtil {
 	 * @param channelName
 	 * @param channelDes
 	 */
-	public static void createChannel(Context context, String channelId, String channelName, String channelDes) {
+	public static void createChannel(Context context, String channelId, String channelName, String channelDes, int lockVisible) {
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
 			int importance = NotificationManager.IMPORTANCE_DEFAULT;
 			NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
-
-			mChannel.setDescription(channelDes);//渠道描述
+			mChannel.setDescription(channelDes);
+			mChannel.setLockscreenVisibility(lockVisible);
 
 			NotificationManager notificationManager = (NotificationManager) context.getSystemService(
 					Context.NOTIFICATION_SERVICE
