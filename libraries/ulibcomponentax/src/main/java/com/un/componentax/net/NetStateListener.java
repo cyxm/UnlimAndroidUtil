@@ -7,6 +7,7 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.os.Build;
+import android.util.Log;
 
 public class NetStateListener {
 
@@ -35,6 +36,18 @@ public class NetStateListener {
 		@Override
 		public void onCapabilitiesChanged(Network network, NetworkCapabilities networkCapabilities) {
 			super.onCapabilitiesChanged(network, networkCapabilities);
+
+			Log.i("PwLog", "onCapabilitiesChanged");
+
+			boolean result = networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR);
+
+			if (mOnNetStateChange != null) {
+				if (result) {
+					mOnNetStateChange.onCellularAvailable();
+				} else {
+					mOnNetStateChange.onCellularUnavailable();
+				}
+			}
 		}
 
 		@Override
@@ -56,7 +69,11 @@ public class NetStateListener {
 			if (connectivityManager == null) {
 				return;
 			}
-			connectivityManager.requestNetwork(new NetworkRequest.Builder().build(), mNetworkCallback);
+			NetworkRequest request = new NetworkRequest.Builder()
+					.addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+					.addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+					.build();
+			connectivityManager.requestNetwork(request, mNetworkCallback);
 		}
 	}
 

@@ -1,1 +1,5 @@
-<manifest package="com.un.componentax" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.un.componentax">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+</manifest>

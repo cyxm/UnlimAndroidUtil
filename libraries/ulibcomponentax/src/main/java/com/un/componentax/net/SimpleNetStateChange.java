@@ -5,4 +5,14 @@ public class SimpleNetStateChange implements OnNetStateChange {
 	public void onAvailable() {
 
 	}
+
+	@Override
+	public void onCellularAvailable() {
+
+	}
+
+	@Override
+	public void onCellularUnavailable() {
+
+	}
 }
