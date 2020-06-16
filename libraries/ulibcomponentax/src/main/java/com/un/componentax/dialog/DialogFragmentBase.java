@@ -136,6 +136,7 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 				ft.setCustomAnimations(R.anim.translate_enter_from_left, R.anim.translate_exit_to_left);
 
 				show(ft, "");
+				showCount.incrementAndGet();
 			}
 		}
 	};
@@ -145,7 +146,7 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
-				int count = showCount.getAndIncrement();
+				int count = showCount.get();
 				if (count == 0) {
 					liveDataIfShow.setValue(null);
 					hostActivity = fragmentActivity;
