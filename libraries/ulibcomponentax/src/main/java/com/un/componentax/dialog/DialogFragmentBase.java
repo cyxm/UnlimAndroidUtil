@@ -42,6 +42,8 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 
 	private FragmentActivity hostActivity;
 
+	private final Object syncObj = new Object();
+
 	public void setDialogWindowSetting(ItfDialogWindowSetting dialogWindowSetting) {
 		this.dialogWindowSetting = dialogWindowSetting;
 	}
@@ -131,12 +133,14 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 			if (integer == null) {
 				return;
 			}
-			if (integer == 0) {
-				FragmentTransaction ft = hostActivity.getSupportFragmentManager().beginTransaction();
-				ft.setCustomAnimations(R.anim.translate_enter_from_left, R.anim.translate_exit_to_left);
+			synchronized (syncObj) {
+				int count = showCount.get();
+				if (count == 1) {
+					FragmentTransaction ft = hostActivity.getSupportFragmentManager().beginTransaction();
+					ft.setCustomAnimations(R.anim.translate_enter_from_left, R.anim.translate_exit_to_left);
 
-				show(ft, "");
-				showCount.incrementAndGet();
+					show(ft, "");
+				}
 			}
 		}
 	};
@@ -146,13 +150,15 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
-				int count = showCount.get();
-				if (count == 0) {
-					liveDataIfShow.setValue(null);
-					hostActivity = fragmentActivity;
-					liveDataIfShow.observe(fragmentActivity, dialogObserver);
+				synchronized (syncObj) {
+					int count = showCount.getAndIncrement();
+					if (count == 0) {
+						liveDataIfShow.setValue(null);
+						hostActivity = fragmentActivity;
+						liveDataIfShow.observe(fragmentActivity, dialogObserver);
+					}
+					liveDataIfShow.postValue(count);
 				}
-				liveDataIfShow.postValue(count);
 			}
 		});
 	}
@@ -162,12 +168,14 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
-				int count = showCount.decrementAndGet();
+				synchronized (syncObj) {
+					int count = showCount.decrementAndGet();
 
-				if (count == 0) {
-					liveDataIfShow.removeObservers(hostActivity);
-					hostActivity = null;
-					dismissAllowingStateLoss();
+					if (count == 0) {
+						liveDataIfShow.removeObservers(hostActivity);
+						hostActivity = null;
+						dismissAllowingStateLoss();
+					}
 				}
 			}
 		});
