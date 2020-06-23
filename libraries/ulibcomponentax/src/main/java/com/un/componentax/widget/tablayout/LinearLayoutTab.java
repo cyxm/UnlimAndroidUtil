@@ -71,6 +71,10 @@ public class LinearLayoutTab extends LinearLayout implements ItfTabLayout {
 			@Override
 			public void onThrottleClick(View v) {
 				if (onTabLayoutChangeNotify != null) {
+					boolean isHandled = onTabLayoutChangeNotify.onBefore(currentTag, v.getTag());
+					if (isHandled) {
+						return;
+					}
 					Object lastTag = currentTag;
 					currentTag = v.getTag();
 					onTabLayoutChangeNotify.onAfter(lastTag, currentTag);
@@ -98,12 +102,16 @@ public class LinearLayoutTab extends LinearLayout implements ItfTabLayout {
 
 	@Override
 	public void changeTab(Object tag) {
-		Object lastTag = currentTag;
-		currentTag = tag;
 
 		if (onTabLayoutChange != null) {
-			onTabLayoutChange.onBefore(lastTag, currentTag);
+			boolean isHandled = onTabLayoutChange.onBefore(currentTag, tag);
+			if (isHandled) {
+				return;
+			}
 		}
+
+		Object lastTag = currentTag;
+		currentTag = tag;
 
 		if (tabViewStateAdapter != null) {
 			for (Object key : viewMap.keySet()) {
