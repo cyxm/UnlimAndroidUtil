@@ -1,6 +1,7 @@
 package com.un.componentax.act;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.MessageQueue;
@@ -77,5 +78,16 @@ public abstract class ActivityBase extends AppCompatActivity {
 			onActivityResult.onActivityResult(requestCode, resultCode, data);
 			removeActivityResult(requestCode);
 		}
+	}
+
+	/**
+	 * 暂时解决WebView在android5上崩溃的问题
+	 * 下一版androidx.appcompat会解决此问题
+	 *
+	 * @return
+	 */
+	@Override
+	public AssetManager getAssets() {
+		return getResources().getAssets();
 	}
 }
