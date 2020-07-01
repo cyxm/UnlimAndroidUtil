@@ -1,10 +1,15 @@
 package com.un.utila.net;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.net.wifi.WifiNetworkSuggestion;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WifiUtil {
@@ -66,14 +71,56 @@ public class WifiUtil {
 	 *
 	 * @param ssid
 	 */
-	public static void connectWifiWithoutPsw(Context context, String ssid) {
-		WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-		if (wifiManager == null) {
-			return;
+	public static void connectWifiWithoutPsw(Context context, String ssid, final OnWifiConnectResult onResult) {
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+
+			final WifiNetworkSuggestion suggestion =
+					new WifiNetworkSuggestion.Builder()
+							.setSsid("TP-LINK_IOS")
+							.setWpa2Passphrase("12345678")
+							.build();
+
+			final List<WifiNetworkSuggestion> suggestionsList = new ArrayList<>();
+			suggestionsList.add(suggestion);
+
+			final WifiManager wifiManager =
+					(WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+			final int status = wifiManager.addNetworkSuggestions(suggestionsList);
+			if (status != WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS) {
+				Log.i("PwLog", "STATUS_NETWORK_SUGGESTIONS=" + status);
+				if (WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_ADD_DUPLICATE == status) {
+					Log.i("PwLog", "STATUS_NETWORK_SUGGESTIONS_ERROR_ADD_DUPLICATE");
+					int removeStatus = wifiManager.removeNetworkSuggestions(suggestionsList);
+					Log.i("PwLog", "REMOVE STATUS_NETWORK_SUGGESTIONS=" + removeStatus);
+					int status2 = wifiManager.addNetworkSuggestions(suggestionsList);
+					Log.i("PwLog", "STATUS_NETWORK_SUGGESTIONS=" + status2);
+				}
+			}
+			// Optional (Wait for post connection broadcast to one of your suggestions)
+			final IntentFilter intentFilter =
+					new IntentFilter(WifiManager.ACTION_WIFI_NETWORK_SUGGESTION_POST_CONNECTION);
+
+			final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+				@Override
+				public void onReceive(Context context, Intent intent) {
+					if (!intent.getAction().equals(
+							WifiManager.ACTION_WIFI_NETWORK_SUGGESTION_POST_CONNECTION)) {
+						return;
+					}
+					// do post connect processing here.
+					Log.i("PwLog", "ACTION_WIFI_NETWORK_SUGGESTION_POST_CONNECTION");
+				}
+			};
+			context.getApplicationContext().registerReceiver(broadcastReceiver, intentFilter);
+		} else {
+			WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+			if (wifiManager == null) {
+				return;
+			}
+			int netId = wifiManager.addNetwork(getWifiConfig(wifiManager, ssid, "", WIFICIPHER_NOPASS));
+			wifiManager.enableNetwork(netId, true);
+			onResult.onSuc();
 		}
-		wifiManager.disableNetwork(wifiManager.getConnectionInfo().getNetworkId());
-		int netId = wifiManager.addNetwork(getWifiConfig(wifiManager, ssid, "", WIFICIPHER_NOPASS));
-		wifiManager.enableNetwork(netId, true);
 	}
 
 	/**
@@ -95,17 +142,16 @@ public class WifiUtil {
 		//指定对应的SSID
 		config.SSID = "\"" + ssid + "\"";
 
-		//如果之前有类似的配置
-		WifiConfiguration tempConfig = isExist(wifiManager, ssid);
-		if (tempConfig != null) {
-			//则清除旧有配置
-			wifiManager.removeNetwork(tempConfig.networkId);
-		}
+		//		//如果之前有类似的配置
+		//		WifiConfiguration tempConfig = isExist(wifiManager, ssid);
+		//		if (tempConfig != null) {
+		//			//则清除旧有配置
+		//			wifiManager.removeNetwork(tempConfig.networkId);
+		//		}
 
 		//不需要密码的场景
 		if (type == WIFICIPHER_NOPASS) {
 			config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-
 		}
 		//以WEP加密的场景
 		else if (type == WIFICIPHER_WEP) {
@@ -131,22 +177,5 @@ public class WifiUtil {
 		}
 
 		return config;
-	}
-
-	/**
-	 * 得到配置好的网络连接
-	 *
-	 * @param ssid
-	 *
-	 * @return
-	 */
-	private static WifiConfiguration isExist(WifiManager wifiManager, String ssid) {
-		List<WifiConfiguration> configs = wifiManager.getConfiguredNetworks();
-		for (WifiConfiguration config : configs) {
-			if (config.SSID.equals("\"" + ssid + "\"")) {
-				return config;
-			}
-		}
-		return null;
 	}
 }

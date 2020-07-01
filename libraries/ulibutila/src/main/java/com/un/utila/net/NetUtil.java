@@ -3,11 +3,15 @@ package com.un.utila.net;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+import android.net.NetworkRequest;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.lang.reflect.Method;
 import java.net.Inet4Address;
@@ -17,6 +21,9 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+
+
+import static android.content.Context.CONNECTIVITY_SERVICE;
 
 /**
  * Created by Administrator on 2016/3/1.
@@ -30,7 +37,7 @@ public class NetUtil {
 		try {
 			mContext = context.getApplicationContext();
 			mWm = (WifiManager) mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-			mCm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+			mCm = (ConnectivityManager) mContext.getSystemService(CONNECTIVITY_SERVICE);
 			//mTm = (TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -585,6 +592,40 @@ public class NetUtil {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public static void registerNetState(Context context) {
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+			final ConnectivityManager cm = (ConnectivityManager) context.getApplicationContext().getSystemService(CONNECTIVITY_SERVICE);
+			if (cm == null) {
+				return;
+			}
+
+			NetworkRequest.Builder builder = new NetworkRequest.Builder();
+			NetworkRequest request = builder
+					.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+					.addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+					.addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+					.build();
+
+			cm.requestNetwork(request, new ConnectivityManager.NetworkCallback() {
+
+				@Override
+				public void onAvailable(Network network) {
+					NetworkInfo.State state = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
+					if (NetworkInfo.State.CONNECTED == state) {
+						Log.i("通知", "WIFI网络已连接");
+					} else {
+						Log.i("通知", "WIFI网络已断开");
+					}
+				}
+
+				@Override
+				public void onCapabilitiesChanged(Network network, NetworkCapabilities networkCapabilities) {
+					super.onCapabilitiesChanged(network, networkCapabilities);
+				}
+			});
 		}
 	}
 }
