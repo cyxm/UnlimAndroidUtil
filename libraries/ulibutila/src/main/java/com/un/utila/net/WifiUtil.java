@@ -1,9 +1,6 @@
 package com.un.utila.net;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiNetworkSuggestion;
@@ -71,13 +68,12 @@ public class WifiUtil {
 	 *
 	 * @param ssid
 	 */
-	public static void connectWifiWithoutPsw(Context context, String ssid, final OnWifiConnectResult onResult) {
+	public static void connectWifiWithoutPsw(Context context, String ssid) {
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
 
 			final WifiNetworkSuggestion suggestion =
 					new WifiNetworkSuggestion.Builder()
-							.setSsid("TP-LINK_IOS")
-							.setWpa2Passphrase("12345678")
+							.setSsid(ssid)
 							.build();
 
 			final List<WifiNetworkSuggestion> suggestionsList = new ArrayList<>();
@@ -85,33 +81,12 @@ public class WifiUtil {
 
 			final WifiManager wifiManager =
 					(WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-			final int status = wifiManager.addNetworkSuggestions(suggestionsList);
-			if (status != WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS) {
-				Log.i("PwLog", "STATUS_NETWORK_SUGGESTIONS=" + status);
-				if (WifiManager.STATUS_NETWORK_SUGGESTIONS_ERROR_ADD_DUPLICATE == status) {
-					Log.i("PwLog", "STATUS_NETWORK_SUGGESTIONS_ERROR_ADD_DUPLICATE");
-					int removeStatus = wifiManager.removeNetworkSuggestions(suggestionsList);
-					Log.i("PwLog", "REMOVE STATUS_NETWORK_SUGGESTIONS=" + removeStatus);
-					int status2 = wifiManager.addNetworkSuggestions(suggestionsList);
-					Log.i("PwLog", "STATUS_NETWORK_SUGGESTIONS=" + status2);
-				}
-			}
-			// Optional (Wait for post connection broadcast to one of your suggestions)
-			final IntentFilter intentFilter =
-					new IntentFilter(WifiManager.ACTION_WIFI_NETWORK_SUGGESTION_POST_CONNECTION);
 
-			final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-				@Override
-				public void onReceive(Context context, Intent intent) {
-					if (!intent.getAction().equals(
-							WifiManager.ACTION_WIFI_NETWORK_SUGGESTION_POST_CONNECTION)) {
-						return;
-					}
-					// do post connect processing here.
-					Log.i("PwLog", "ACTION_WIFI_NETWORK_SUGGESTION_POST_CONNECTION");
-				}
-			};
-			context.getApplicationContext().registerReceiver(broadcastReceiver, intentFilter);
+			if (wifiManager == null) {
+				return;
+			}
+
+			wifiManager.addNetworkSuggestions(suggestionsList);
 		} else {
 			WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 			if (wifiManager == null) {
@@ -119,7 +94,6 @@ public class WifiUtil {
 			}
 			int netId = wifiManager.addNetwork(getWifiConfig(wifiManager, ssid, "", WIFICIPHER_NOPASS));
 			wifiManager.enableNetwork(netId, true);
-			onResult.onSuc();
 		}
 	}
 
@@ -178,4 +152,6 @@ public class WifiUtil {
 
 		return config;
 	}
+
+
 }
