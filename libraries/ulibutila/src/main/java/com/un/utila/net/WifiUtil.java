@@ -1,13 +1,14 @@
 package com.un.utila.net;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkRequest;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
-import android.net.wifi.WifiNetworkSuggestion;
+import android.net.wifi.WifiNetworkSpecifier;
 import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class WifiUtil {
 
@@ -71,22 +72,53 @@ public class WifiUtil {
 	public static void connectWifiWithoutPsw(Context context, String ssid) {
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
 
-			final WifiNetworkSuggestion suggestion =
-					new WifiNetworkSuggestion.Builder()
-							.setSsid(ssid)
-							.build();
+			//			final WifiNetworkSuggestion suggestion =
+			//					new WifiNetworkSuggestion.Builder()
+			//							.setSsid(ssid)
+			//							.build();
+			//
+			//			final List<WifiNetworkSuggestion> suggestionsList = new ArrayList<>();
+			//			suggestionsList.add(suggestion);
+			//
+			//			final WifiManager wifiManager =
+			//					(WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+			//
+			//			if (wifiManager == null) {
+			//				return;
+			//			}
+			//
+			//			wifiManager.addNetworkSuggestions(suggestionsList);
 
-			final List<WifiNetworkSuggestion> suggestionsList = new ArrayList<>();
-			suggestionsList.add(suggestion);
+			WifiNetworkSpecifier specifier = new WifiNetworkSpecifier.Builder()
+					.setSsid(ssid)
+					.build();
 
-			final WifiManager wifiManager =
-					(WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+			NetworkRequest request = new NetworkRequest.Builder()
+					.addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+					.setNetworkSpecifier(specifier)
+					.build();
 
-			if (wifiManager == null) {
-				return;
-			}
+			final ConnectivityManager cm = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+			cm.requestNetwork(request, new ConnectivityManager.NetworkCallback() {
+				@Override
+				public void onAvailable(Network network) {
+					super.onAvailable(network);
 
-			wifiManager.addNetworkSuggestions(suggestionsList);
+					cm.bindProcessToNetwork(network);
+				}
+
+				@Override
+				public void onLost(Network network) {
+					super.onLost(network);
+					Log.i("PwLog", "onLost");
+				}
+
+				@Override
+				public void onUnavailable() {
+					super.onUnavailable();
+					Log.i("PwLog", "onUnavailable");
+				}
+			});
 		} else {
 			WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 			if (wifiManager == null) {
