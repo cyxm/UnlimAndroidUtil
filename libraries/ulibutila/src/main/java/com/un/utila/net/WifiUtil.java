@@ -6,16 +6,16 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiNetworkSpecifier;
-import android.os.Build;
 import android.util.Log;
 
 public class WifiUtil {
 
-	private static final int WIFICIPHER_NOPASS = 0;
-	private static final int WIFICIPHER_WEP = 1;
-	private static final int WIFICIPHER_WPA = 2;
+	public static final int WIFICIPHER_NOPASS = 0,
+			WIFICIPHER_WEP = 1,
+			WIFICIPHER_WPA = 2;
 
 	public static void connectWifi(Context context) {
 		WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -70,7 +70,7 @@ public class WifiUtil {
 	 *
 	 * @param ssid
 	 */
-	public static void connectWifiWithoutPsw(Context context, String ssid) {
+	public static void connectWifiWithoutPsw(Context context, final String ssid) {
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
 
 			WifiNetworkSpecifier specifier = new WifiNetworkSpecifier.Builder()
@@ -107,39 +107,34 @@ public class WifiUtil {
 				}
 			});
 		} else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-			NetworkRequest request = new NetworkRequest.Builder()
-					.addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-					.build();
-			final ConnectivityManager cm = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-			if (cm == null) {
-				return;
-			}
-			cm.requestNetwork(request, new ConnectivityManager.NetworkCallback() {
-				@Override
-				public void onAvailable(Network network) {
-					super.onAvailable(network);
-					Log.i("PwLog", "onAvailable=" + cm.getNetworkCapabilities(network).toString());
-
-					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-						cm.bindProcessToNetwork(network);
-					}
-				}
-
-				@Override
-				public void onLost(Network network) {
-					super.onLost(network);
-					Log.i("PwLog", "onLost");
-				}
-			});
 			final WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 			if (wifiManager == null) {
 				return;
 			}
+			final WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+
 			WifiConfiguration wifiConfiguration = getWifiConfig(wifiManager, ssid, "", WIFICIPHER_NOPASS);
 			final int netId = wifiManager.addNetwork(wifiConfiguration);
-			if (netId > 0) {
+
+			if (wifiInfo != null && netId > 0) {
+				int oriNetId = wifiInfo.getNetworkId();
+				//连接的WiFi一致,不进行重新连接的动作
+				if (oriNetId == netId) {
+					return;
+				}
+				boolean disableResult = wifiManager.disableNetwork(oriNetId);
+				Log.i("PwLog", "disableResult=" + (disableResult ? "1" : "0"));
 				wifiManager.enableNetwork(netId, true);
 			}
+
+			//			new Timer().schedule(new TimerTask() {
+			//				@Override
+			//				public void run() {
+			//					if (wifiInfo != null) {
+			//						wifiManager.enableNetwork(wifiInfo.getNetworkId(), true);
+			//					}
+			//				}
+			//			}, 10000);
 		}
 	}
 
@@ -149,7 +144,7 @@ public class WifiUtil {
 	 * @param ssid
 	 * @param psw
 	 */
-	private static WifiConfiguration getWifiConfig(WifiManager wifiManager, String ssid, String psw, int type) {
+	public static WifiConfiguration getWifiConfig(WifiManager wifiManager, String ssid, String psw, int type) {
 
 		//初始化WifiConfiguration
 		WifiConfiguration config = new WifiConfiguration();
