@@ -74,17 +74,6 @@ public class WifiAutoConnectManagerL {
 				return;
 			}
 
-			//			//监听网络状态
-			//			NetworkRequest request = new NetworkRequest.Builder()
-			//					.addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-			//					.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-			//					.build();
-			//			final ConnectivityManager cm = (ConnectivityManager) appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-			//			if (cm == null) {
-			//				return;
-			//			}
-			//			cm.requestNetwork(request, networkCallback);
-
 			//自动连接wifi
 			final WifiManager wifiManager = (WifiManager) appContext.getSystemService(Context.WIFI_SERVICE);
 			if (wifiManager == null) {
@@ -111,8 +100,7 @@ public class WifiAutoConnectManagerL {
 			}
 			//记录原WiFi的NetId
 			oriNetId = currentNetId;
-			//取消原来连接的WiFi
-			//			wifiManager.disableNetwork(oriNetId);
+
 			//连接
 			wifiManager.enableNetwork(autoNetId, true);
 		}
@@ -123,21 +111,13 @@ public class WifiAutoConnectManagerL {
 	 */
 	public void disable() {
 		synchronized (syncObj) {
-			//			//停止网络监听
-			//			final ConnectivityManager cm = (ConnectivityManager) appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-			//			if (cm == null) {
-			//				return;
-			//			}
-			//			cm.unregisterNetworkCallback(networkCallback);
-
 			//清除网络连接信息
 			//连接原WiFi
 			final WifiManager wifiManager = (WifiManager) appContext.getSystemService(Context.WIFI_SERVICE);
 			if (wifiManager == null) {
 				return;
 			}
-			wifiManager.disableNetwork(autoNetId);
-			//			wifiManager.enableNetwork(oriNetId, true);
+			wifiManager.enableNetwork(oriNetId, true);
 
 			oriNetId = -1;
 			autoNetId = -1;
