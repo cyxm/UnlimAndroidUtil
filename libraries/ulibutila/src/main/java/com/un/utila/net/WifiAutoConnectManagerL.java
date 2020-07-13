@@ -30,22 +30,6 @@ public class WifiAutoConnectManagerL {
 
 	private String ssid;
 
-	//	private ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback() {
-	//		@Override
-	//		public void onAvailable(Network network) {
-	//			super.onAvailable(network);
-	//
-	//			//保证通过wifi连接,而非移动网络
-	//			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-	//				final ConnectivityManager cm = (ConnectivityManager) appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-	//				if (cm == null) {
-	//					return;
-	//				}
-	//				cm.bindProcessToNetwork(network);
-	//			}
-	//		}
-	//	};
-
 	/**
 	 * 初始化无密码的热点连接
 	 */
