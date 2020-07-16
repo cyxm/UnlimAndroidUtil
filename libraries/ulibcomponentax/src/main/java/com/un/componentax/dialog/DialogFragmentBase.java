@@ -134,8 +134,8 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 				return;
 			}
 			synchronized (syncObj) {
-				int count = showCount.getAndIncrement();
-				if (count == 0) {
+				int count = showCount.get();
+				if (count > 0) {
 					FragmentTransaction ft = hostActivity.getSupportFragmentManager().beginTransaction();
 					ft.setCustomAnimations(R.anim.translate_enter_from_left, R.anim.translate_exit_to_left);
 
@@ -151,13 +151,13 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 			@Override
 			public void run() {
 				synchronized (syncObj) {
-					int count = showCount.get();
+					int count = showCount.getAndIncrement();
 					if (count == 0) {
 						liveDataIfShow.setValue(null);
 						hostActivity = fragmentActivity;
 						liveDataIfShow.observe(fragmentActivity, dialogObserver);
+						liveDataIfShow.postValue(count);
 					}
-					liveDataIfShow.postValue(count);
 				}
 			}
 		});
