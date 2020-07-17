@@ -71,7 +71,7 @@ public class WifiUtil {
 	 * @param ssid
 	 */
 	public static void connectWifiWithoutPsw(Context context, final String ssid) {
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+		if (android.os.Build.VERSION.SDK_INT >= 29) {
 
 			WifiNetworkSpecifier specifier = new WifiNetworkSpecifier.Builder()
 					.setSsid(ssid)
