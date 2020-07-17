@@ -86,6 +86,11 @@ public class LinearLayoutTab extends LinearLayout implements ItfTabLayout {
 	}
 
 	@Override
+	public View getTab(Object tag) {
+		return viewMap.get(tag);
+	}
+
+	@Override
 	public void setOnTabChange(ItfOnTabLayoutChange itf) {
 		this.onTabLayoutChange = itf;
 	}

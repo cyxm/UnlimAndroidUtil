@@ -9,6 +9,8 @@ public interface ItfTabLayout {
 
 	void addTab(View v, Object tag);
 
+	View getTab(Object tag);
+
 	void setOnTabChange(ItfOnTabLayoutChange itf);
 
 	void setOnTabChangeNotify(ItfOnTabLayoutChange itf);
