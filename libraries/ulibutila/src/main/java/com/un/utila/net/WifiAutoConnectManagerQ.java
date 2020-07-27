@@ -93,6 +93,9 @@ public class WifiAutoConnectManagerQ {
 	 */
 	public void disable() {
 		synchronized (syncObj) {
+			if (appContext == null) {
+				return;
+			}
 			//清除网络连接信息
 			ConnectivityManager connectivityManager = (ConnectivityManager) appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 			if (connectivityManager == null) {
