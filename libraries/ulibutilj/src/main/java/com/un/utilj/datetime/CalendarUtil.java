@@ -113,8 +113,32 @@ public class CalendarUtil {
 		if (calendar == null) {
 			return;
 		}
-		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE),
-				hour, minute, second);
+		calendar.set(
+				calendar.get(Calendar.YEAR),
+				calendar.get(Calendar.MONTH),
+				calendar.get(Calendar.DATE),
+				hour,
+				minute,
+				second
+		);
+		calendar.set(Calendar.MILLISECOND, 0);
+	}
+
+	/**
+	 * 设置年月日
+	 */
+	public static void setYmd(Calendar calendar, int year, int month, int day) {
+		if (calendar == null) {
+			return;
+		}
+		calendar.set(
+				year,
+				month,
+				day,
+				calendar.get(Calendar.HOUR_OF_DAY),
+				calendar.get(Calendar.MINUTE),
+				calendar.get(Calendar.SECOND)
+		);
 		calendar.set(Calendar.MILLISECOND, 0);
 	}
 

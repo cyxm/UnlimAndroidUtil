@@ -60,26 +60,15 @@ public class NetUtil {
 		return mWm.isWifiEnabled();
 	}
 
-	public boolean isMobileNetEnabled() {
-		Class cmClass = mCm.getClass();
-		Class[] argClasses = null;
-		Object[] argObject = null;
-		Boolean isOpen = false;
-		try {
-			Method method = cmClass.getMethod("getMobileDataEnabled", argClasses);
-			isOpen = (Boolean) method.invoke(mCm, argObject);
-		} catch (Exception e) {
-			e.printStackTrace();
+	public static boolean isMobileNetConnected(Context context) {
+		ConnectivityManager cm = (ConnectivityManager) context.getApplicationContext().getSystemService(CONNECTIVITY_SERVICE);
+		if (cm == null) {
+			return false;
 		}
-		return isOpen;
-	}
-
-	public boolean isMobileNetConnected() {
-		NetworkInfo info = mCm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+		NetworkInfo info = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 		if (info == null) {
 			return false;
 		}
-		//  Log.e("NET","netconnected---->"+info.toString());
 		if (info.isConnected()) {
 			return true;
 		}
