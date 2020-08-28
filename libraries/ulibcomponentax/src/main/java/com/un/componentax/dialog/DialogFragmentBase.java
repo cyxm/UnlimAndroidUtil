@@ -23,12 +23,30 @@ import com.un.utila.display.SizeUnitUtil;
 import com.un.utila.viewhelp.ViewClipUtil;
 import com.un.utilax.livedata.LiveDataSetDirect;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * 基础dialog,提供定制接口
  */
 public abstract class DialogFragmentBase extends AppCompatDialogFragment {
+
+
+	//对话框状态
+	/**
+	 * 未显示
+	 */
+	private final int STATE_NONE = 0,
+	/**
+	 * 准备显示
+	 */
+	STATE_READY = 1,
+	/**
+	 * 显示中
+	 */
+	STATE_SHOW = 2;
+
+	/**
+	 * 当前状态
+	 */
+	private int state = STATE_NONE;
 
 	private ItfDialogWindowSetting dialogWindowSetting;
 
@@ -36,9 +54,7 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 
 	private ItfDialogViewSetting dialogViewSetting;
 
-	private LiveDataSetDirect<Integer> liveDataIfShow = new LiveDataSetDirect<>();
-
-	private AtomicInteger showCount = new AtomicInteger(0);
+	private LiveDataSetDirect<Object> liveDataIfShow = new LiveDataSetDirect<>();
 
 	private FragmentActivity hostActivity;
 
@@ -127,19 +143,20 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 
 	}
 
-	Observer dialogObserver = new Observer<Integer>() {
+	Observer<Object> dialogObserver = new Observer<Object>() {
 		@Override
-		public void onChanged(Integer integer) {
-			if (integer == null) {
+		public void onChanged(Object obj) {
+			if (obj == null) {
 				return;
 			}
 			synchronized (syncObj) {
-				int count = showCount.get();
-				if (count > 0) {
+				if (state == STATE_READY) {
 					FragmentTransaction ft = hostActivity.getSupportFragmentManager().beginTransaction();
 					ft.setCustomAnimations(R.anim.translate_enter_from_left, R.anim.translate_exit_to_left);
 
 					show(ft, "");
+
+					state = STATE_SHOW;
 				}
 			}
 		}
@@ -151,12 +168,13 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 			@Override
 			public void run() {
 				synchronized (syncObj) {
-					int count = showCount.getAndIncrement();
-					if (count == 0) {
+					if (state == STATE_NONE) {
 						liveDataIfShow.setValue(null);
 						hostActivity = fragmentActivity;
 						liveDataIfShow.observe(fragmentActivity, dialogObserver);
-						liveDataIfShow.postValue(count);
+						liveDataIfShow.postValue(new Object());
+
+						state = STATE_READY;
 					}
 				}
 			}
@@ -169,12 +187,17 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 			@Override
 			public void run() {
 				synchronized (syncObj) {
-					int count = showCount.decrementAndGet();
-
-					if (count == 0) {
+					if (state == STATE_SHOW) {
 						liveDataIfShow.removeObservers(hostActivity);
 						hostActivity = null;
 						dismissAllowingStateLoss();
+
+						state = STATE_NONE;
+					} else if (state == STATE_READY) {
+						liveDataIfShow.removeObservers(hostActivity);
+						hostActivity = null;
+
+						state = STATE_NONE;
 					}
 				}
 			}
