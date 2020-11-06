@@ -88,6 +88,18 @@ public class ResUtil {
 	 *
 	 * @return
 	 */
+	public static int getInt(Context context, int res) {
+		return context.getResources().getInteger(res);
+	}
+
+	/**
+	 * 获取int资源
+	 *
+	 * @param context
+	 * @param res
+	 *
+	 * @return
+	 */
 	public static int[] getIntArray(Context context, int res) {
 		return context.getResources().getIntArray(res);
 	}
