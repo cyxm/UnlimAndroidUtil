@@ -392,4 +392,16 @@ public class CalendarUtil {
 		return formatDateToMonthString(formatTimestampToDate(timestamp));
 	}
 
+	/**
+	 * 时间戳(long)转日期("yyyy-MM-dd")
+	 *
+	 * @param timestamp
+	 * 		时间戳
+	 *
+	 * @return
+	 */
+	public static String formatTimestampToDateString(long timestamp) {
+		return formatDateToDateString(formatTimestampToDate(timestamp));
+	}
+
 }
