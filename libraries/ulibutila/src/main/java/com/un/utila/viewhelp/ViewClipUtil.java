@@ -19,7 +19,6 @@ public class ViewClipUtil {
 		}
 	}
 
-
 	public static void clipOval(final View v) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			v.setClipToOutline(true);
@@ -31,5 +30,4 @@ public class ViewClipUtil {
 			});
 		}
 	}
-
 }

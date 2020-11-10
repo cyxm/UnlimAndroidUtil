@@ -1,8 +1,21 @@
 include ':app'
 
-//批量指定工程路径
-file('libraries').eachDir {
-    dir ->
-        settings.include(dir.name)
-        settings.project(":${dir.name}").projectDir = dir
+//将所有子文件加入工程
+List<String> includeLibs = new ArrayList<String>()
+includeLibs.add("/libraries")
+includeLibs.add("/third")
+//适配不同操作系统
+def osName = System.getProperty("os.name")
+if (!osName.contains("window")) {
+    for (def i = 0; i < includeLibs.size(); i++) {
+        includeLibs.set(i, includeLibs.get(i).replaceAll("/", "\\\\"))
+    }
+}
+//
+for (def filelibs : includeLibs) {
+    file(filelibs).eachDir {
+        dir ->
+            settings.include(dir.name)
+            settings.project(":${dir.name}").projectDir = dir
+    }
 }
