@@ -266,6 +266,18 @@ public class CalendarUtil {
 	}
 
 	/**
+	 * Date转日期("yyyy-MM-dd HH:mm:ss")
+	 *
+	 * @param date
+	 *
+	 * @return
+	 */
+	public static String formatDateToTimeString(Date date) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+		return format.format(date);
+	}
+
+	/**
 	 * 日期("yyyy-MM-dd")转Date
 	 *
 	 * @param dateString
@@ -402,6 +414,18 @@ public class CalendarUtil {
 	 */
 	public static String formatTimestampToDateString(long timestamp) {
 		return formatDateToDateString(formatTimestampToDate(timestamp));
+	}
+
+	/**
+	 * 时间戳(long)转日期时间("yyyy-MM-dd HH:mm:ss")
+	 *
+	 * @param timestamp
+	 * 		时间戳
+	 *
+	 * @return
+	 */
+	public static String formatTimestampToTimeString(long timestamp) {
+		return formatDateToTimeString(formatTimestampToDate(timestamp));
 	}
 
 }
