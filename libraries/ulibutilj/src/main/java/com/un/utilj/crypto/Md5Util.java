@@ -5,10 +5,13 @@ import java.security.NoSuchAlgorithmException;
 
 public class Md5Util {
 
-	public static String hashStr(String oriStr) {
-		return md5BytesToString(hash(oriStr));
-	}
-
+	/**
+	 * 将hash后的字节数组转为字符串
+	 *
+	 * @param data
+	 *
+	 * @return
+	 */
 	public static String md5BytesToString(byte[] data) {
 		if (data == null || data.length <= 0) {
 			return "";
@@ -37,5 +40,31 @@ public class Md5Util {
 		byte[] btInput = oriStr.getBytes();
 		mdInst.update(btInput);
 		return mdInst.digest();
+	}
+
+	public static byte[] hash(byte[] data) {
+		if (data == null || data.length <= 0) {
+			return null;
+		}
+		MessageDigest mdInst = null;
+		try {
+			mdInst = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		if (mdInst == null) {
+			return null;
+		}
+
+		mdInst.update(data);
+		return mdInst.digest();
+	}
+
+	public static String hashStr(String oriStr) {
+		return md5BytesToString(hash(oriStr));
+	}
+
+	public static String hashStr(byte[] oriStr) {
+		return md5BytesToString(hash(oriStr));
 	}
 }
