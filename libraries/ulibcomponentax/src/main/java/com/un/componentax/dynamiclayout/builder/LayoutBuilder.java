@@ -1,6 +1,5 @@
 package com.un.componentax.dynamiclayout.builder;
 
-import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,11 +29,6 @@ public class LayoutBuilder {
 	 * ID到数据的映射
 	 */
 	Map<Object, Integer> viewDataMap = new HashMap<>();
-
-	/**
-	 * ID到View的映射,用于生成
-	 */
-	SparseArray<View> views = new SparseArray<>();
 
 	/**
 	 * 在调用{@link #add(Object, int)}之前必须调用此函数
