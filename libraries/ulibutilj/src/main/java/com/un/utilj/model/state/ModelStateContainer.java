@@ -1,11 +1,13 @@
-package com.un.utilj.model;
+package com.un.utilj.model.state;
+
+import com.un.utilj.model.state.base.IState;
 
 /**
- * 带状态的泛型模型
+ * 可记录上次状态的实现类
  *
  * @param <T>
  */
-public class ModelStateContainer<T> {
+public abstract class ModelStateContainer<T> implements IState<T> {
 
 	/**
 	 * 数据状态
@@ -41,18 +43,22 @@ public class ModelStateContainer<T> {
 		this.data = data;
 	}
 
+	@Override
 	public int getState() {
 		return state;
 	}
 
+	@Override
 	public void setState(int state) {
 		this.state = state;
 	}
 
+	@Override
 	public T getData() {
 		return data;
 	}
 
+	@Override
 	public void setData(T data) {
 		this.data = data;
 	}

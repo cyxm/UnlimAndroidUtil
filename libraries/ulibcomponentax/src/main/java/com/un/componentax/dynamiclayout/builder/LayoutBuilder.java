@@ -26,7 +26,7 @@ public class LayoutBuilder {
 	ItfViewGenerator viewGenerator = null;
 
 	/**
-	 * ID到数据的映射
+	 * 数据到ID的映射
 	 */
 	Map<Object, Integer> viewDataMap = new HashMap<>();
 
@@ -109,7 +109,6 @@ public class LayoutBuilder {
 						((ViewGroup) viewLv0[1]).addView(viewSep);
 					}
 				}
-				//
 				parent.addView(viewLv0[0]);
 			}
 		}
