@@ -1,10 +1,14 @@
-package com.un.componentax.animation;
+package com.un.componentax.view.animation;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -109,5 +113,33 @@ public class AnimationUtil {
 			animationDrawable.addFrame(drawable, duration);
 		}
 		return animationDrawable;
+	}
+
+	/**
+	 * 旋转动画,绕中心旋转
+	 *
+	 * @return
+	 */
+	public static Animation getRotateAnimation() {
+		Animation animation = new RotateAnimation(
+				0, 360,
+				RotateAnimation.RELATIVE_TO_SELF, 0.5F,
+				RotateAnimation.RELATIVE_TO_SELF, 0.5F
+		);
+		animation.setInterpolator(new LinearInterpolator());
+		animation.setDuration(1000);
+		animation.setRepeatMode(Animation.RESTART);
+		animation.setRepeatCount(Animation.INFINITE);
+		animation.setFillAfter(false);
+		return animation;
+	}
+
+	public static Animation getScaleAnimation() {
+		Animation animation = new ScaleAnimation(1, 0, 1, 0);
+		animation.setInterpolator(new LinearInterpolator());
+		animation.setDuration(200);
+		animation.setRepeatCount(1);
+		animation.setFillAfter(true);
+		return animation;
 	}
 }
