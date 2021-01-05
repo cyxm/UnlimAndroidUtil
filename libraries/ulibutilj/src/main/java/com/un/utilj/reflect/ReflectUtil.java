@@ -8,27 +8,25 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ReflectUtil {
 
-	public static Object constructor(Class clz, Object... args) {
+	public static Object constructor(Class clz, Class[] types, Object[] args) {
 		//检查输入参数
-		if (clz == null || args == null) {
+		if (clz == null || types == null || args == null) {
+			return null;
+		}
+		if (types.length != args.length) {
 			return null;
 		}
 		//结果值
 		Object result = null;
-		//从参数获取参数类型
-		int length = args.length;
-		Class[] paramClzArray = new Class[args.length];
-		for (int i = 0; i < length; i++) {
-			paramClzArray[i] = args[i].getClass();
-		}
 		//使用构造函数构造对象
 		try {
-			Constructor constructor = clz.getDeclaredConstructor(paramClzArray);
+			Constructor constructor = clz.getDeclaredConstructor(types);
 			result = constructor.newInstance(args);
 		} catch (NoSuchMethodException
 				| IllegalAccessException
 				| InstantiationException
 				| InvocationTargetException e) {
+			e.printStackTrace();
 		}
 		return result;
 	}

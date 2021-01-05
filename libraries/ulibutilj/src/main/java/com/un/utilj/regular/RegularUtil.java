@@ -18,6 +18,13 @@ public class RegularUtil {
 		return param != null && Pattern.compile("[0-9]*").matcher(param).matches();
 	}
 
+	/**
+	 * 获取大写字母开头的单词
+	 *
+	 * @param param
+	 *
+	 * @return
+	 */
 	public static List<String> splitWithUpcase(String param) {
 		List<String> array = new ArrayList<>();
 		if (param == null || param.isEmpty()) {
