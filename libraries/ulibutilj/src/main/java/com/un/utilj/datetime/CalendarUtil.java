@@ -126,6 +126,7 @@ public class CalendarUtil {
 
 	/**
 	 * 设置年月日
+	 * 月份1-12
 	 */
 	public static void setYmd(Calendar calendar, int year, int month, int day) {
 		if (calendar == null) {
@@ -133,7 +134,7 @@ public class CalendarUtil {
 		}
 		calendar.set(
 				year,
-				month,
+				month - 1,
 				day,
 				calendar.get(Calendar.HOUR_OF_DAY),
 				calendar.get(Calendar.MINUTE),
