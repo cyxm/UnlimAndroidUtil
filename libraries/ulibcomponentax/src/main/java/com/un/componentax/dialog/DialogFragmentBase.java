@@ -28,7 +28,6 @@ import com.un.utilax.livedata.LiveDataSetDirect;
  */
 public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 
-
 	//对话框状态
 	/**
 	 * 未显示
@@ -190,7 +189,11 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 					if (state == STATE_SHOW) {
 						liveDataIfShow.removeObservers(hostActivity);
 						hostActivity = null;
-						dismissAllowingStateLoss();
+						try {
+							dismissAllowingStateLoss();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 
 						state = STATE_NONE;
 					} else if (state == STATE_READY) {
