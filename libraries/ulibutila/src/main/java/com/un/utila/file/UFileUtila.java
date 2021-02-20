@@ -20,6 +20,16 @@ public class UFileUtila {
 		return file == null ? "" : file.getAbsolutePath();
 	}
 
+	public static boolean createExternalPicturesDir(Context context) {
+		File file = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+		return UFileUtilj.createDirs(file);
+	}
+
+	public static String getExternalPicturesDir(Context context) {
+		File file = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+		return file == null ? "" : file.getAbsolutePath();
+	}
+
 	public static boolean haveMemory(String path, int needsize) {
 
 		if (path.contains(Environment.getExternalStorageDirectory().getAbsolutePath())) {
