@@ -220,6 +220,7 @@ public class UFileUtilj {
 			while ((i = fis.read(buf)) != -1) {
 				fos.write(buf, 0, i);
 			}
+			fos.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

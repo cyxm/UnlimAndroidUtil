@@ -62,4 +62,22 @@ public class ComponentSysUtil {
 
 		context.startActivity(shareIntent);
 	}
+
+	/**
+	 * 分享公共文件夹
+	 *
+	 * @param context
+	 * @param title
+	 * @param intentType
+	 * @param uri
+	 */
+	public static void goSharePublic(Context context, String title, String intentType, Uri uri) {
+		Intent intent = new Intent();
+		intent.setAction(Intent.ACTION_SEND);
+		intent.putExtra(Intent.EXTRA_STREAM, uri);
+		intent.setType(intentType);
+		Intent shareIntent = Intent.createChooser(intent, title);
+
+		context.startActivity(shareIntent);
+	}
 }
