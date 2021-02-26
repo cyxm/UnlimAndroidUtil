@@ -11,7 +11,14 @@ import java.util.List;
  */
 public class ShareManagerUtil {
 
-	public static void saveJpg(
+	/**
+	 * 添加媒体文件到媒体库中
+	 *
+	 * @param context
+	 * @param oriFileFullPath
+	 * @param relativePath
+	 */
+	public static void addFile(
 			Context context,
 			String oriFileFullPath,
 			String relativePath
@@ -23,6 +30,14 @@ public class ShareManagerUtil {
 		}
 	}
 
+	/**
+	 * 获取特定路径下的所有媒体文件
+	 *
+	 * @param context
+	 * @param relativePath
+	 *
+	 * @return
+	 */
 	public static List<ModelMediaUri> getAll(
 			Context context,
 			String relativePath
@@ -34,6 +49,13 @@ public class ShareManagerUtil {
 		}
 	}
 
+	/**
+	 * 删除媒体文件
+	 *
+	 * @param context
+	 * @param id
+	 * @param mimeType
+	 */
 	public static void deleteFile(Context context, long id, String mimeType) {
 		if (OsUtil.isGeAndroid10()) {
 			ShareManagerGEQ.delete(context, id, mimeType);
