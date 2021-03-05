@@ -30,7 +30,7 @@ public class WifiUtil {
 		config.allowedProtocols.clear();
 
 		// 指定对应的SSID
-		config.SSID = "\"" + "IPC365_AP-406A8E006AC5" + "\"";
+		config.SSID = "\"" + "XXXX" + "\"";
 		config.preSharedKey = "\"" + "\"";
 		config.hiddenSSID = true;
 		config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
