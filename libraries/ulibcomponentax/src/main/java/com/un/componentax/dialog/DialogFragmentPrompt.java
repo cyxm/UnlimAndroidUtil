@@ -42,12 +42,12 @@ public abstract class DialogFragmentPrompt extends DialogFragmentModal {
 
 			@Override
 			public int getWidthMax() {
-				return 0;
+				return (int) (dm.widthPixels*0.9);
 			}
 
 			@Override
 			public int getHeightMax() {
-				return (int) (dm.widthPixels*0.8);
+				return (int) (dm.heightPixels*0.8);
 			}
 
 			@Override

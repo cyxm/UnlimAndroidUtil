@@ -139,7 +139,6 @@ public abstract class DialogFragmentBase extends AppCompatDialogFragment {
 	}
 
 	protected void onAfterUIInited() {
-
 	}
 
 	Observer<Object> dialogObserver = new Observer<Object>() {
