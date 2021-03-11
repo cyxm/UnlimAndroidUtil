@@ -11,5 +11,6 @@ public class UFileUtiljTest {
 		UFileUtilj.createDirs(fullPath);
 		boolean result = UFileUtilj.isFileOrDirExist(fullPath);
 		Assert.assertTrue(result);
+		UFileUtilj.deleteFilesOrDirs(fullPath);
 	}
 }
