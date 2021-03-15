@@ -22,6 +22,9 @@ public class DateFormatUtil {
 	public static final String PATTERN_DT_0 = "yyyyMMddHH";
 
 	public static String getFormatDatetime(String format, long milli, TimeZone timeZone, Locale locale) {
+		if (format == null) {
+			return "";
+		}
 		SimpleDateFormat sdf = new SimpleDateFormat(format, locale);
 		sdf.setTimeZone(timeZone);
 		return sdf.format(milli);

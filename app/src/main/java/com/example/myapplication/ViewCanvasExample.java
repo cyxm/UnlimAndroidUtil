@@ -94,7 +94,7 @@ public class ViewCanvasExample extends View {
 		//		paint.setTextSize(50);
 		//		paint.setShadowLayer(5, 15, 20, Color.GREEN);
 		paint.setMaskFilter(new BlurMaskFilter(20, BlurMaskFilter.Blur.OUTER));
-		RectF outRect = new RectF(0, 0, 200, 100);
+		RectF outRect = new RectF(20, 20, 200, 100);
 		c.drawRoundRect(outRect, 20, 20, paint);
 		c.drawCircle(200, 200, 50, paint);
 
